@@ -2,6 +2,7 @@ package com.example.chat;
 
 import java.util.Arrays;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpOutputMessage;
@@ -26,6 +27,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.chat.model.Message;
+import com.example.chat.util.MessageCode;
 
 /**
  * セキュリティ設定
@@ -41,16 +43,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/** HTTPメッセージコンバーター */
 	private final MappingJackson2HttpMessageConverter httpMessageConverter;
 
+	/** メッセージソース */
+	private MessageSource messageSource;
+
 	/**
 	 * コンストラクタ
 	 * 
 	 * @param userDetailsService   ユーザー詳細サービス
 	 * @param httpMessageConverter HTTPメッセージコンバーター
+	 * @param messageSource        メッセージソース
 	 */
 	public SecurityConfig(UserDetailsService userDetailsService,
-			MappingJackson2HttpMessageConverter httpMessageConverter) {
+			MappingJackson2HttpMessageConverter httpMessageConverter, MessageSource messageSource) {
 		this.userDetailsService = userDetailsService;
 		this.httpMessageConverter = httpMessageConverter;
+		this.messageSource = messageSource;
 	}
 
 	/**
@@ -131,7 +138,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			}
 
 			Message result = new Message();
-			result.setMessages(Arrays.asList("ユーザー名またはパスワードが違います。"));
+			result.setMessages(Arrays
+					.asList(messageSource.getMessage(MessageCode.AUTHENTICATION_FAILURE, null, request.getLocale())));
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
 			httpMessageConverter.write(result, MediaType.APPLICATION_JSON, outputMessage);
@@ -148,7 +156,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		return (request, response, exception) -> {
 			Message result = new Message();
-			result.setMessages(Arrays.asList("ログインしていません。"));
+			result.setMessages(
+					Arrays.asList(messageSource.getMessage(MessageCode.UNAUTHENTICATION, null, request.getLocale())));
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
 			httpMessageConverter.write(result, MediaType.APPLICATION_JSON, outputMessage);
@@ -158,7 +167,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
 	 * ログアウトハンドラー
 	 * 
-	 * @return	HttpStatusReturningLogoutSuccessHandler
+	 * @return HttpStatusReturningLogoutSuccessHandler
 	 */
 	private LogoutSuccessHandler logoutSuccessHandler() {
 		return new HttpStatusReturningLogoutSuccessHandler();

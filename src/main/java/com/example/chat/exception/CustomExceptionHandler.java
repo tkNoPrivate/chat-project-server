@@ -17,12 +17,25 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.chat.model.Message;
+import com.example.chat.util.MessageCode;
 
+/**
+ * 例外ハンドラー
+ * 
+ * @author tk
+ *
+ */
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+	/** メッセージソース */
 	private MessageSource messageSource;
 
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param messageSource メッセージソース
+	 */
 	public CustomExceptionHandler(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
@@ -45,6 +58,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
+	/**
+	 * NotFoundException
+	 * 
+	 * @param e       NotFoundException
+	 * @param request
+	 * @return ResponseEntity
+	 */
 	@ExceptionHandler({ NotFoundException.class })
 	public ResponseEntity<Object> NotFoundException(NotFoundException e, WebRequest request) {
 		Message message = new Message();
@@ -53,6 +73,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
+	/**
+	 * ConflictException
+	 * 
+	 * @param e       ConflictException
+	 * @param request
+	 * @return ResponseEntity
+	 */
 	@ExceptionHandler({ ConflictException.class })
 	public ResponseEntity<Object> ConflictException(ConflictException e, WebRequest request) {
 		Message message = new Message();
@@ -62,10 +89,18 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
+	/**
+	 * Exception
+	 * 
+	 * @param e       Exception
+	 * @param request
+	 * @return ResponseEntity
+	 */
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> Exception(Exception e, WebRequest request) {
 		Message message = new Message();
-		message.setMessages(Arrays.asList(messageSource.getMessage("e.chat.systemError", null, request.getLocale())));
+		message.setMessages(
+				Arrays.asList(messageSource.getMessage(MessageCode.SYSTEM_ERROR, null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}

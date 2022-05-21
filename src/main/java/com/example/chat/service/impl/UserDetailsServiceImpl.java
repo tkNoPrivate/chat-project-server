@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.chat.model.Authentication;
 import com.example.chat.model.CustomUserDetails;
 import com.example.chat.repository.LoginRepository;
+import com.example.chat.util.MessageCode;
 
 /**
  * ユーザー詳細サービス実装
@@ -34,13 +35,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
 		if (StringUtils.isEmpty(userId)) {
-			// 入力されていない場合は例外をスローする。メッセージは隠蔽される為適当で良い。
-			throw new UsernameNotFoundException("error!");
+			// 入力されていない場合は例外をスローする。
+			throw new UsernameNotFoundException(MessageCode.AUTHENTICATION_FAILURE);
 		}
 		Authentication auth = loginRepository.getOne(userId);
 		if (auth == null) {
-			// ユーザーが取得出来なかった場合は例外をスローする。メッセージは隠蔽される為適当で良い。
-			throw new UsernameNotFoundException("error!");
+			// ユーザーが取得出来なかった場合は例外をスローする。
+			throw new UsernameNotFoundException(MessageCode.AUTHENTICATION_FAILURE);
 		}
 
 		// UserDetails実装クラスに取得情報を詰め替えて、返却する。

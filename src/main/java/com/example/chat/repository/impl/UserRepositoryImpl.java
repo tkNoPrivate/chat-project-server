@@ -11,6 +11,7 @@ import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
 import com.example.chat.repository.UserRepository;
 import com.example.chat.repository.mapper.UserMapper;
+import com.example.chat.util.MessageCode;
 
 /**
  * ユーザー情報取得リポジトリ
@@ -36,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
 	public UserResponse select(String userId) throws NotFoundException {
 		UserResponse user = this.userMapper.select(userId);
 		if (user == null) {
-			throw new NotFoundException("e.chat.notFound");
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return this.userMapper.select(userId);
 	}
@@ -51,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			return this.userMapper.insert(signUp);
 		} catch (DuplicateKeyException e) {
-			throw new ConflictException("userId", "e.chat.conflict", e);
+			throw new ConflictException("userId", MessageCode.CONFLICT, e);
 		}
 	}
 
@@ -60,7 +61,7 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			return this.userMapper.update(user);
 		} catch (DuplicateKeyException e) {
-			throw new ConflictException("userId", "e.chat.conflict", e);
+			throw new ConflictException("userId", MessageCode.CONFLICT, e);
 		}
 	}
 

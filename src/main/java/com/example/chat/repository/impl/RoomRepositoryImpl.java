@@ -9,6 +9,7 @@ import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
 import com.example.chat.repository.RoomRepository;
 import com.example.chat.repository.mapper.RoomMapper;
+import com.example.chat.util.MessageCode;
 
 /**
  * 部屋リポジトリ実装
@@ -35,7 +36,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 	public RoomResponse select(int roomId) throws NotFoundException{
 		RoomResponse room = this.roomMapper.select(roomId);
 		if(room == null) {
-			throw new NotFoundException("e.chat.notFound");
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return room;
 	}
