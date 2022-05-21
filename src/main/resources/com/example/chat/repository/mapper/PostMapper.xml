@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.chat.repository.mapper.PostMapper">
+   
+   <resultMap type="com.example.chat.model.PostResponse" id="post">
+	   	<id column="postId" property="postId"/> 
+	   	<result column="postUserId" property="postUserId"/>
+	   	<result column="postUserName" property="postUserName"/>
+	   	<result column="roomId" property="roomId"/>
+	   	<result column="contents" property="contents"/>
+	   	<result column="insDt" property="insDt"/>
+	   	<result column="updDt" property="updDt"/>
+	   	<collection property="postLikes" columnPrefix="pl_" ofType="com.example.chat.model.PostLikeResponse">
+	   		<id column="userId" property="userId" />
+	   		<result column="userName" property="userName"/>
+	   		<result column="postId" property="postId"/>
+	   		<result column="insDt" property="insDt"/>
+	   		<result column="updDt" property="updDt"/>
+	   	</collection>
+	   	<collection property="comments" columnPrefix="c_" resultMap="commentResponse" />
+   	</resultMap>
+   	
+   	<resultMap type="com.example.chat.model.CommentResponse" id="commentResponse">
+   		<id column="commentId" property="commentId" />
+   		<result column="userName" property="userName"/>
+   		<result column="postId" property="postId"/>
+   		<result column="commentUserId" property="commentUserId"/>
+   		<result column="commentUserName" property="commentUserName"/>
+   		<result column="comment" property="comment"/>
+   		<result column="insDt" property="insDt"/>
+   		<result column="updDt" property="updDt"/>
+   		<collection property="commentLikes" columnPrefix="cl_" ofType="com.example.chat.model.CommentLikeResponse">
+   			<id column="userId" property="userId" />
+		    <result column="commentId" property="commentId"/>
+		   	<result column="insDt" property="insDt"/>
+		   	<result column="updDt" property="updDt"/>
+   		</collection>
+   	</resultMap>
+   	
+   	<select id="selectList" resultMap="post">
+      <include refid="select" />
+      where 
+      	p.room_id = #{roomId}
+      order by p.upd_dt,p.id,c.upd_dt,c.id
+   </select>
+   
+   <select id="selectSearchList" resultMap="post">
+      <include refid="select" />
+      where 
+      	p.room_id = #{roomId}
+      and(
+      	pu.user_name like '%${searchText}%'
+      or
+      	p.contents like '%${searchText}%'
+      or
+      	cu.user_name like '%${searchText}%'
+      or
+      	c.comment like '%${searchText}%'
+      )
+      order by p.upd_dt,p.id,c.upd_dt,c.id
+   </select>
+   <sql id="select">
+   		select
+      	p.id postId,
+      	p.user_id postUserId,
+      	pu.user_name postUserName,
+      	p.room_id roomId,
+      	p.contents contents,
+      	p.ins_dt insDt,
+      	p.upd_dt updDt,
+      	pl.user_id pl_userId,
+      	plu.user_name pl_userName,
+      	pl.post_id pl_postId,
+      	pl.ins_dt pl_insDt,
+      	pl.upd_dt pl_updDt,
+      	c.id c_commentId,
+      	c.post_id c_postId,
+      	c.user_id c_commentUserId,
+      	cu.user_name c_commentUserName,
+      	c.comment c_comment,
+      	c.ins_dt c_insDt,
+      	c.upd_dt c_updDt,
+      	cl.user_id c_cl_userId,
+      	clu.user_name c_cl_userName,
+      	cl.comment_id c_cl_commentId,
+      	cl.ins_dt c_cl_insDt,
+      	cl.upd_dt c_cl_updDt
+      from 
+      	posts p
+      left outer join
+        users pu
+      on
+        p.user_id = pu.user_id          
+      left outer join
+      	postlikes pl
+      on
+      	p.id = pl.post_id
+      left outer join
+      	users plu
+      on
+      	pl.user_id = plu.user_id
+      left outer join
+      	comments c
+      on
+      	p.id = c.post_id   
+      left outer join 
+        users cu
+      on
+        c.user_id = cu.user_id
+      left outer join
+      	commentlikes cl
+      on
+       	c.id = cl.comment_id
+      left outer join
+       	users clu
+      on
+      	cl.user_id = clu.user_id
+   </sql>
+   
+   <insert id="insert" parameterType="com.example.chat.model.Post">
+      insert into 
+      	posts
+      values(
+      	0,
+      	#{postUserId},
+      	#{roomId},
+      	#{contents},
+      	#{insDt},
+      	#{updDt}   
+      );
+   </insert>
+   <update id="update" parameterType="com.example.chat.model.Post">
+   		update
+   			posts
+   		set
+   			contents = #{contents},
+   			upd_dt = #{updDt}
+   		where
+   			id = #{postId}
+   </update>
+   <delete id="delete" parameterType="com.example.chat.model.Post">
+   		delete 
+   			p,
+   			pl,
+   			c,
+   			cl
+   		from
+   			posts p
+   		left outer join
+   			postlikes pl
+   		on
+   			p.id = pl.post_id
+   		left outer join
+   			comments c
+   		on
+   			p.id = c.post_id
+   		left outer join
+   			commentlikes cl
+   		on
+   			c.id = cl.comment_id
+   		where
+   			p.id = #{postId}
+   </delete>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.chat.repository.mapper.RoomMapper">
+<resultMap type="com.example.chat.model.RoomResponse" id="room">
+   	<id column="roomId" property="roomId"/> 
+   	<result column="roomName" property="roomName"/>
+   	<result column="registeredUser" property="registeredUser"/>
+   	<collection property="joinUsers" ofType="com.example.chat.model.UserResponse">
+   		<id column="userId" property="userId" />
+   		<result column="userName" property="userName"/>
+   	</collection>
+   </resultMap>
+<select id="select" resultMap="room">
+      	select
+      		r.id roomId,
+      		r.room_name roomName,
+      		r.registered_user registeredUser,
+      		u.user_id userId,
+      		u.user_name userName
+      	from
+      		rooms r
+      	left outer join
+      		joinroom j
+      	on
+      		r.id = j.room_id
+      	left outer join 
+      		users u
+      	on
+      		j.user_id = u.user_id
+      	where
+      		r.id = #{roomId}
+      	order by
+      		u.user_id
+   </select>
+   
+   <select id="selectListByRegisteredUser" resultType="com.example.chat.model.RoomResponse">
+      	select
+      		id roomId,
+      		room_name roomName,
+      		registered_user registeredUser,
+      		ins_dt insDt,
+      		upd_dt updDt
+      	from
+      		rooms
+      	where
+      		registered_user = #{registeredUser}
+      	order by
+      		id
+   </select>
+   
+   <select id="selectNonJoinRooms" resultType="com.example.chat.model.RoomResponse">
+      	select
+      		id roomId,
+      		room_name roomName,
+      		registered_user registeredUser,
+      		ins_dt insDt,
+      		upd_dt updDt
+      	from
+      		rooms
+      	where
+      		id not in (
+      			select
+      				room_id
+      			from
+      				joinroom
+      			where
+      				user_id = #{userId})
+      	and
+      		registered_user != #{userId}
+      	order by
+      		id
+   </select>
+   
+   
+   <insert id="insert" parameterType="com.example.chat.model.Room">
+   		insert into
+   			rooms
+   		values(
+   			0,
+   			#{roomName},
+   			#{registeredUser},
+   			#{insDt},
+   			#{updDt})
+   </insert>
+   <update id="update" parameterType="com.example.chat.model.Room">
+   		update
+   			rooms
+   		set
+   			room_name = #{roomName},
+   			upd_dt = #{updDt}
+   		where
+   			id = #{roomId}
+   </update>
+   <delete id="delete" parameterType="com.example.chat.model.Room">
+   		delete 
+   			r,
+   			jr
+   		from
+   			rooms r
+   		left outer join
+   			joinroom jr
+   		on
+   			r.id = jr.room_id
+   		where
+   			r.id = #{roomId}
+   </delete>
+</mapper>

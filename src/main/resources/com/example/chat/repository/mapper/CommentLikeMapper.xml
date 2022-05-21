@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.chat.repository.mapper.CommentLikeMapper">
+   <insert id="insert" parameterType="com.example.chat.model.CommentLike">
+   		insert into 
+      		commentlikes
+      	values(
+      		#{commentId},
+      		#{userId},
+      		#{insDt},
+      		#{updDt}
+      	);
+   </insert>
+   <delete id="delete" parameterType="com.example.chat.model.CommentLike">
+   		delete from
+   			commentlikes
+   		where
+   			comment_id = #{commentId}
+   		and
+   			user_id = #{userId};
+   </delete>
+</mapper>

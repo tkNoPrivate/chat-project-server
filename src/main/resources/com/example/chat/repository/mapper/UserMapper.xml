@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.chat.repository.mapper.UserMapper">
+	
+   <resultMap type="com.example.chat.model.UserResponse" id="userInf">
+   	<id column="userId" property="userId"/> 
+   	<result column="userName" property="userName"/>
+   	<collection property="rooms" ofType="com.example.chat.model.RoomResponse">
+   		<id column="roomId" property="roomId" />
+   		<result column="roomName" property="roomName"/>
+   		<result column="registeredUser" property="registeredUser"/>
+   	</collection>
+   </resultMap>
+   
+   <select id="select" resultMap="userInf">
+      select 
+      	u.user_id userId,
+      	u.user_name userName,
+      	r.id roomId,
+      	r.room_name roomName,
+      	r.registered_user registeredUser
+      from 
+      	users u
+      left outer join 
+      	joinroom j
+      on
+      	u.user_id = j.user_id
+      left outer join 
+      	rooms r
+      on
+      	r.id = j.room_id
+      or
+      	r.registered_user = u.user_id
+      where 
+      	u.user_id = #{userId}
+      order by
+        r.id
+   </select>
+   
+   <select id="selectAll" resultType="com.example.chat.model.UserResponse">
+   		select
+    		user_id userId,
+   			user_name userName
+   		from
+   			users
+   		order by
+   			user_id
+   </select>
+   
+   <insert id="insert" parameterType="com.example.chat.model.User">
+      insert into 
+      	users
+      values(
+      	#{userId},
+      	#{userName},
+      	#{password},
+      	#{role},
+      	#{insDt},
+      	#{updDt}   
+      );
+   </insert>
+   
+   <update id="update" parameterType="com.example.chat.model.User">
+   		update 
+   			users
+   		set
+   			user_name = #{userName},
+   			password = #{password},
+   			upd_dt = #{updDt}
+   		where
+   			user_id = #{userId}
+   </update>
+</mapper>

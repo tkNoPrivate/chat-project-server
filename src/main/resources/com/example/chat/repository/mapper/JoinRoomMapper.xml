@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.chat.repository.mapper.JoinRoomMapper">
+   <insert id="insertCountUser" parameterType="com.example.chat.model.JoinRoom">
+   		insert into
+   			joinroom
+   		values
+   		<foreach collection="userIdList" item="userId" separator=","> 
+   		(
+   			#{userId},
+   			#{roomIdList[0]},
+   			#{insDt},
+   			#{updDt}
+   		)
+   		</foreach>
+   		
+   </insert>
+   <insert id="insertCountRoom" parameterType="com.example.chat.model.JoinRoom">
+   		insert into
+   			joinroom
+   		values
+   		<foreach collection="roomIdList" item="roomId" separator=","> 
+   		(
+   			#{userIdList[0]},
+   			#{roomId},
+   			#{insDt},
+   			#{updDt}
+   		)
+   		</foreach>
+   		
+   </insert>
+   <delete id="deleteCountUser" parameterType="com.example.chat.model.JoinRoom">
+   		delete from
+   			joinroom
+   		where
+   			user_id in (
+   			<foreach collection="userIdList" item="userId" separator=",">
+   				#{userId}
+   			</foreach>
+   			)
+   		and
+   			room_id = #{roomIdList[0]}
+   </delete>
+   <delete id="deleteCountRoom" parameterType="com.example.chat.model.JoinRoom">
+   		delete from
+   			joinroom
+   		where
+   			user_id = #{userIdList[0]}
+   		and
+   			room_id in (
+   		<foreach collection="roomIdList" item="roomId" separator=",">
+   			#{roomId}
+   		</foreach>
+   		);
+   </delete>
+   <delete id="deleteByRoomId" parameterType="com.example.chat.model.JoinRoom">
+   		delete from
+   			joinroom
+   		where
+   			room_id = #{roomIdList[0]}
+   </delete>
+</mapper>
