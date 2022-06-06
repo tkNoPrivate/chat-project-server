@@ -2,6 +2,8 @@ package com.example.chat.service;
 
 import java.util.List;
 
+import org.apache.ibatis.javassist.NotFoundException;
+
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 
@@ -15,10 +17,12 @@ public interface PostService {
 	/**
 	 * 投稿全件取得
 	 * 
+	 * @param userId ユーザーID
 	 * @param roomCd 部屋ID
 	 * @return 投稿リスト
+	 * @throws NotFoundException
 	 */
-	List<PostResponse> getPosts(int roomId);
+	List<PostResponse> getPosts(String userId, int roomId) throws NotFoundException;
 
 	/**
 	 * 投稿検索

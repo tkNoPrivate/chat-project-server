@@ -28,6 +28,11 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 	}
 
 	@Override
+	public int selectJoinCount(String userId, int roomId) {
+		return this.joinRoomMapper.selectJoinCount(userId, roomId);
+	}
+
+	@Override
 	public int insert(JoinRoom joinRoom) {
 		int resultCount;
 

@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.chat.repository.mapper.JoinRoomMapper">
+   <select id="selectJoinCount" resultType="_int">
+   		select
+   			count(*)
+   		from
+   			users u
+   		left outer join
+   			joinroom j
+   		on
+   			u.user_id = j.user_id
+   		left outer join
+   			rooms r
+   		on
+   			u.user_id = r.registered_user
+   		where
+   			(j.user_id = #{userId} and
+   			 j.room_id = #{roomId}
+   			)
+   		or
+   			(r.registered_user = #{userId} and
+   			 r.id = #{roomId}
+   			)			
+   </select>
    <insert id="insertCountUser" parameterType="com.example.chat.model.JoinRoom">
    		insert into
    			joinroom

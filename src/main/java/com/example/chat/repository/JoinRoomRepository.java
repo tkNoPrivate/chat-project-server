@@ -11,6 +11,14 @@ import com.example.chat.model.JoinRoom;
 public interface JoinRoomRepository {
 
 	/**
+	 * 参加部屋件数取得(最大1件)
+	 * 
+	 * @param userId ユーザーID
+	 * @param roomId 部屋ID
+	 * @return 参加部屋件数
+	 */
+	int selectJoinCount(String userId,int roomId);
+	/**
 	 * 参加部屋登録
 	 * 
 	 * @param joinRoom 参加部屋

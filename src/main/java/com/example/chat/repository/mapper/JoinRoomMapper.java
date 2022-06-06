@@ -14,6 +14,15 @@ import com.example.chat.model.JoinRoom;
 public interface JoinRoomMapper {
 
 	/**
+	 * 参加部屋件数取得(最大1件)
+	 * 
+	 * @param userId ユーザーID
+	 * @param roomId 部屋ID
+	 * @return 参加部屋件数
+	 */
+	int selectJoinCount(String userId, int roomId);
+
+	/**
 	 * 参加部屋登録（ユーザー数分）
 	 * 
 	 * @param joinRoom 参加部屋モデル
@@ -44,7 +53,7 @@ public interface JoinRoomMapper {
 	 * @return 更新件数
 	 */
 	int deleteCountRoom(JoinRoom joinRoom);
-	
+
 	/**
 	 * 参加部屋削除（部屋ID）
 	 * 
