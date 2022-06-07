@@ -6,12 +6,15 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.chat.exception.ConfirmPasswordMismatchException;
 import com.example.chat.exception.ConflictException;
+import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
 import com.example.chat.repository.UserRepository;
 import com.example.chat.service.UserService;
 import com.example.chat.util.Constant;
+import com.example.chat.util.MessageCode;
 import com.example.chat.util.Util;
 
 /**
@@ -65,10 +68,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int update(User user) throws ConflictException {
-
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setUpdDt(Util.getStrNowDate());
-
 		return this.userRepository.update(user);
+	}
+
+	@Override
+	public int updatePassword(PasswordUpdate passwordUpdate) throws ConfirmPasswordMismatchException {
+		String password = this.userRepository.selectPassword(passwordUpdate.getUserId());
+		if(!passwordEncoder.matches(passwordUpdate.getPassword(),password)) {
+			throw new ConfirmPasswordMismatchException(MessageCode.CONFILM_PASSWORD_MISMATCH);
+		}
+		passwordUpdate.setNewPassword(passwordEncoder.encode(passwordUpdate.getNewPassword()));
+		passwordUpdate.setUpdDt(Util.getStrNowDate());
+		return this.userRepository.updatePassword(passwordUpdate);
 	}
 }

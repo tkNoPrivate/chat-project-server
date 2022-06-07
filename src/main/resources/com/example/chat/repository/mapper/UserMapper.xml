@@ -70,4 +70,23 @@
    		where
    			user_id = #{userId}
    </update>
+   <select id="selectPassword" resultType="String">
+   		select
+   			password
+   		from
+   			users
+   		where
+   			user_id = #{userId}
+   </select>
+   
+   <update id="updatePassword" parameterType="com.example.chat.model.PasswordUpdate">
+   		update 
+   			users
+   		set
+   			password = #{newPassword},
+   			upd_dt = #{updDt}
+   		where
+   			user_id = #{userId}
+   </update>
+   
 </mapper>

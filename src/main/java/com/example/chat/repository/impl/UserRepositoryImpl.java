@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 import com.example.chat.exception.ConflictException;
+import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
 import com.example.chat.repository.UserRepository;
@@ -63,6 +64,16 @@ public class UserRepositoryImpl implements UserRepository {
 		} catch (DuplicateKeyException e) {
 			throw new ConflictException("userId", MessageCode.CONFLICT, e);
 		}
+	}
+
+	@Override
+	public int updatePassword(PasswordUpdate passwordUpdate) {
+		return this.userMapper.updatePassword(passwordUpdate);
+	}
+
+	@Override
+	public String selectPassword(String userId) {
+		return this.userMapper.selectPassword(userId);
 	}
 
 }

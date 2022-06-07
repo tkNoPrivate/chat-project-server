@@ -90,6 +90,22 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
+	 * ConfirmPasswordMismatchException
+	 * 
+	 * @param e       ConfirmPasswordMismatchException
+	 * @param request
+	 * @return ResponseEntity
+	 */
+	@ExceptionHandler({ ConfirmPasswordMismatchException.class })
+	public ResponseEntity<Object> ConfirmPasswordMismatchException(ConfirmPasswordMismatchException e,
+			WebRequest request) {
+		Message message = new Message();
+		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(), null, request.getLocale())));
+		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+
+	}
+
+	/**
 	 * Exception
 	 * 
 	 * @param e       Exception

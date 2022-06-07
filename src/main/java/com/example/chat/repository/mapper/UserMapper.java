@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
 
@@ -45,5 +46,21 @@ public interface UserMapper {
 	 * @return 更新件数
 	 */
 	int update(User user);
+	
+	/**
+	 * パスワード取得
+	 * 
+	 * @param userId ユーザーID
+	 * @return パスワード
+	 */
+	String selectPassword(String userId);
+	
+	/**
+	 * パスワード更新
+	 * 
+	 * @param passwordUpdate パスワード更新モデル
+	 * @return 更新件数
+	 */
+	int updatePassword(PasswordUpdate passwordUpdate);
 
 }

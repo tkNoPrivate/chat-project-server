@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.chat.controller.form.PasswordUpdateForm;
 import com.example.chat.controller.form.UserForm;
+import com.example.chat.exception.ConfirmPasswordMismatchException;
 import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CustomUserDetails;
+import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.ResultCount;
 import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
@@ -47,7 +50,7 @@ public class UserController {
 	 * @throws NotFoundException
 	 */
 	@GetMapping("/user")
-	public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails aut) throws NotFoundException{
+	public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails aut) throws NotFoundException {
 		return this.userService.getUser(aut.getUsername());
 
 	}
@@ -85,14 +88,30 @@ public class UserController {
 	 * 
 	 * @param userForm ユーザーフォーム
 	 * @return 更新件数モデル
-	 * @throws PasswordMismatchException
+	 * @throws ConflictException
 	 */
 	@PostMapping("/user/update")
-	public ResultCount update(@Validated UserForm userForm) throws ConflictException{
+	public ResultCount update(@Validated UserForm userForm) throws ConflictException {
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		ResultCount resultCount = new ResultCount();
 		resultCount.setResultCount(this.userService.update(user));
+		return resultCount;
+	}
+
+	/**
+	 * パスワード更新
+	 * 
+	 * @param passwordUpdateForm パスワード更新フォーム
+	 * @return 更新件数モデル
+	 */
+	@PostMapping("/user/password/update")
+	public ResultCount updatePassword(@Validated PasswordUpdateForm passwordUpdateForm)
+			throws ConfirmPasswordMismatchException {
+		PasswordUpdate passwordUpdate = new PasswordUpdate();
+		BeanUtils.copyProperties(passwordUpdateForm, passwordUpdate);
+		ResultCount resultCount = new ResultCount();
+		resultCount.setResultCount(this.userService.updatePassword(passwordUpdate));
 		return resultCount;
 	}
 

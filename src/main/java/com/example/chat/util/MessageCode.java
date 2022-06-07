@@ -13,6 +13,9 @@ public class MessageCode {
 
 	/** データが存在しません。 */
 	public static final String NOT_FOUND = "e.chat.notFound";
+	
+	/** 現在のパスワードが一致しません。 */
+	public static final String CONFILM_PASSWORD_MISMATCH = "e.chat.ConfirmPasswordMismatch";
 
 	/** システムエラー */
 	public static final String SYSTEM_ERROR = "e.chat.systemError";
