@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.chat.controller.form.PasswordUpdateForm;
 import com.example.chat.controller.form.UserForm;
+import com.example.chat.controller.form.UserUpdateForm;
 import com.example.chat.exception.ConfirmPasswordMismatchException;
 import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CustomUserDetails;
@@ -86,14 +87,14 @@ public class UserController {
 	/**
 	 * ユーザー情報更新
 	 * 
-	 * @param userForm ユーザーフォーム
+	 * @param userUpdateForm ユーザーフォーム
 	 * @return 更新件数モデル
 	 * @throws ConflictException
 	 */
 	@PostMapping("/user/update")
-	public ResultCount update(@Validated UserForm userForm) throws ConflictException {
+	public ResultCount update(@Validated UserUpdateForm userUpdateForm) throws ConflictException {
 		User user = new User();
-		BeanUtils.copyProperties(userForm, user);
+		BeanUtils.copyProperties(userUpdateForm, user);
 		ResultCount resultCount = new ResultCount();
 		resultCount.setResultCount(this.userService.update(user));
 		return resultCount;

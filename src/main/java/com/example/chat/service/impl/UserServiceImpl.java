@@ -75,7 +75,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updatePassword(PasswordUpdate passwordUpdate) throws ConfirmPasswordMismatchException {
 		String password = this.userRepository.selectPassword(passwordUpdate.getUserId());
-		if(!passwordEncoder.matches(passwordUpdate.getPassword(),password)) {
+		// 現在のパスワードが正しいかチェックする
+		if (!passwordEncoder.matches(passwordUpdate.getPassword(), password)) {
 			throw new ConfirmPasswordMismatchException(MessageCode.CONFILM_PASSWORD_MISMATCH);
 		}
 		passwordUpdate.setNewPassword(passwordEncoder.encode(passwordUpdate.getNewPassword()));

@@ -65,7 +65,6 @@
    			users
    		set
    			user_name = #{userName},
-   			password = #{password},
    			upd_dt = #{updDt}
    		where
    			user_id = #{userId}
