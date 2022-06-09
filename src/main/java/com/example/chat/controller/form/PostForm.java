@@ -2,6 +2,8 @@ package com.example.chat.controller.form;
 
 import javax.validation.constraints.NotBlank;
 
+import com.example.chat.controller.annotation.CustomSize;
+
 import lombok.Data;
 
 /**
@@ -24,6 +26,7 @@ public class PostForm {
 
 	/** コンテンツ */
 	@NotBlank
+	@CustomSize(min=1,max=100)
 	private String contents;
 
 	/** 登録日時 */

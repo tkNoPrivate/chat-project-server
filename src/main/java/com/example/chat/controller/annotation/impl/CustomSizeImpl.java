@@ -16,15 +16,18 @@ public class CustomSizeImpl implements ConstraintValidator<CustomSize, String> {
 
 	/** 最小桁数 */
 	private int min;
-	
-	/**最大桁数*/
+
+	/** 最大桁数 */
 	private int max;
-	
+
+	/** 改行コード */
+	private final String NEWLINE = "\r\n";
+
 	@Override
-	  public void initialize(CustomSize customSize) {
+	public void initialize(CustomSize customSize) {
 		min = customSize.min();
-	    max = customSize.max();
-	  }
+		max = customSize.max();
+	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
@@ -33,7 +36,7 @@ public class CustomSizeImpl implements ConstraintValidator<CustomSize, String> {
 			return true;
 		}
 
-		int valueSize = value.length();
+		int valueSize = value.length() - StringUtils.countMatches(value, NEWLINE);
 		return valueSize >= min && valueSize <= max;
 	}
 

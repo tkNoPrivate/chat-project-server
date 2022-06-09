@@ -2,6 +2,8 @@ package com.example.chat.controller.form;
 
 import javax.validation.constraints.NotBlank;
 
+import com.example.chat.controller.annotation.CustomSize;
+
 import lombok.Data;
 
 /**
@@ -24,6 +26,7 @@ public class CommentForm {
 
 	/** コメント */
 	@NotBlank
+	@CustomSize(min=1,max=100)
 	private String comment;
 
 	/** 反応 */

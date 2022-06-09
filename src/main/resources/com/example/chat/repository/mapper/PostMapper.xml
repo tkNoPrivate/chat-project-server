@@ -31,6 +31,7 @@
    		<result column="updDt" property="updDt"/>
    		<collection property="commentLikes" columnPrefix="cl_" ofType="com.example.chat.model.CommentLikeResponse">
    			<id column="userId" property="userId" />
+   			<result column="userName" property="userName"/>
 		    <result column="commentId" property="commentId"/>
 		   	<result column="insDt" property="insDt"/>
 		   	<result column="updDt" property="updDt"/>
