@@ -9,7 +9,13 @@ public class MessageCode {
 	public static final String UNAUTHENTICATION = "e.chat.unauthenticated";
 
 	/** その{0}は既に使用されています。 */
-	public static final String CONFLICT = "e.chat.conflict";
+	public static final String CONFLICT_INSERT = "e.chat.conflict.insert";
+	
+	/** その{0}は既に更新されています。 */
+	public static final String CONFLICT_UPDATE = "e.chat.conflict.update";
+	
+	/** その{0}は既に削除されています。 */
+	public static final String CONFLICT_DELETE = "e.chat.conflict.delete";
 
 	/** データが存在しません。 */
 	public static final String NOT_FOUND = "e.chat.notFound";

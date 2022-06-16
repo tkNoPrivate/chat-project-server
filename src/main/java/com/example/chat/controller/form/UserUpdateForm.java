@@ -25,5 +25,8 @@ public class UserUpdateForm {
 	@NotBlank
 	@CustomSize(min = 1, max = 30)
 	private String userName;
+	
+	/** 更新日時 */
+	private String updDt;
 
 }

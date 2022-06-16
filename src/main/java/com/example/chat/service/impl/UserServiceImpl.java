@@ -67,9 +67,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int update(User user) throws ConflictException {
+	public int update(User user) throws ConflictException, NotFoundException {
+		UserResponse userResponse = this.userRepository.select(user.getUserId());
+		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
+			throw new ConflictException("ユーザー", MessageCode.CONFLICT_UPDATE);
+		}
 		user.setUpdDt(Util.getStrNowDate());
 		return this.userRepository.update(user);
+	}
+
+	@Override
+	public int delete(User user) throws ConflictException {
+		return this.userRepository.delete(user);
 	}
 
 	@Override
@@ -83,4 +92,5 @@ public class UserServiceImpl implements UserService {
 		passwordUpdate.setUpdDt(Util.getStrNowDate());
 		return this.userRepository.updatePassword(passwordUpdate);
 	}
+
 }

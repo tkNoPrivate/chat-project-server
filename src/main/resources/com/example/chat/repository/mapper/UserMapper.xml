@@ -5,6 +5,8 @@
    <resultMap type="com.example.chat.model.UserResponse" id="userInf">
    	<id column="userId" property="userId"/> 
    	<result column="userName" property="userName"/>
+   	<result column="insDt" property="insDt"/>
+   	<result column="updDt" property="updDt"/>
    	<collection property="rooms" ofType="com.example.chat.model.RoomResponse">
    		<id column="roomId" property="roomId" />
    		<result column="roomName" property="roomName"/>
@@ -16,6 +18,8 @@
       select 
       	u.user_id userId,
       	u.user_name userName,
+      	u.ins_dt insDt,
+      	u.upd_dt updDt,
       	r.id roomId,
       	r.room_name roomName,
       	r.registered_user registeredUser
@@ -87,5 +91,44 @@
    		where
    			user_id = #{userId}
    </update>
+   
+   <delete id="delete" parameterType="com.example.chat.model.User">
+   		delete
+   			u,
+   			jr,
+   			r,
+   			p,
+   			c,
+   			pl,
+   			cl 
+   		from
+   			users u
+   		left outer join
+   			joinroom jr
+   		on
+   			u.user_id = jr.user_id
+   		left outer join
+   			rooms r
+   		on
+   			u.user_id = r.registered_user
+   		left outer join
+   			posts p
+   		on
+   			u.user_id = p.user_id
+   		left outer join
+   			comments c
+   		on
+   			u.user_id = c.user_id
+   		left outer join
+   			postlikes pl
+   		on
+   			u.user_id = pl.user_id
+   		left outer join
+   			commentlikes cl
+   		on
+   			u.user_id = cl.user_id
+   		where
+   			u.user_id = #{userId}
+   </delete>
    
 </mapper>

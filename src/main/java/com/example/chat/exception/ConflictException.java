@@ -18,6 +18,17 @@ public class ConflictException extends Exception {
 	}
 
 	/**
+	 * コンストラクタ
+	 * 
+	 * @param key     キー
+	 * @param message メッセージ
+	 */
+	public ConflictException(String key, String message) {
+		super(message);
+		this.key = key;
+	}
+
+	/**
 	 * キー取得
 	 * 
 	 * @return

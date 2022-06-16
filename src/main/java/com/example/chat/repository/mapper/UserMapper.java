@@ -13,6 +13,10 @@ import com.example.chat.model.UserResponse;
  * 
  * @author tk
  */
+/**
+ * @author TK
+ *
+ */
 @Mapper
 public interface UserMapper {
 
@@ -46,6 +50,14 @@ public interface UserMapper {
 	 * @return 更新件数
 	 */
 	int update(User user);
+	
+	/**
+	 * ユーザー情報削除
+	 * 
+	 * @param user ユーザーモデル
+	 * @return 更新件数
+	 */
+	int delete(User user);
 	
 	/**
 	 * パスワード取得

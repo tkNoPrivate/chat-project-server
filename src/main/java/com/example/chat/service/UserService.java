@@ -48,9 +48,19 @@ public interface UserService {
 	 * @param user ユーザーモデル
 	 * @return 更新件数
 	 * @throws ConflictException
+	 * @throws NotFoundException
 	 */
-	int update(User user) throws ConflictException;
-	
+	int update(User user) throws ConflictException, NotFoundException;
+
+	/**
+	 * ユーザー情報削除
+	 * 
+	 * @param user ユーザーモデル
+	 * @return 更新件数
+	 * @throws ConflictException
+	 */
+	int delete(User user) throws ConflictException;
+
 	/**
 	 * パスワード更新
 	 * 

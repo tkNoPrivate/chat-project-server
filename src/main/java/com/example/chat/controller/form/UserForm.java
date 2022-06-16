@@ -40,6 +40,7 @@ public class UserForm {
 	@HalfAlphanumericSymbol
 	private String confirmPassword;
 
+
 	/**
 	 * パスワードと確認パスワードの一致チェック
 	 * 

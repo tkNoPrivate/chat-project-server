@@ -46,10 +46,18 @@ public interface UserRepository {
 	 * 
 	 * @param user ユーザー
 	 * @return 更新件数
+	 */
+	int update(User user);
+
+	/**
+	 * ユーザー情報削除
+	 * 
+	 * @param user
+	 * @return 更新件数
 	 * @throws ConflictException
 	 */
-	int update(User user) throws ConflictException;
-	
+	int delete(User user) throws ConflictException;
+
 	/**
 	 * パスワード取得
 	 * 
@@ -57,7 +65,7 @@ public interface UserRepository {
 	 * @return パスワード
 	 */
 	String selectPassword(String userId);
-	
+
 	/**
 	 * パスワード更新
 	 * 

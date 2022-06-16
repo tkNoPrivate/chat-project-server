@@ -87,16 +87,33 @@ public class UserController {
 	/**
 	 * ユーザー情報更新
 	 * 
-	 * @param userUpdateForm ユーザーフォーム
+	 * @param userUpdateForm ユーザー更新フォーム
 	 * @return 更新件数モデル
 	 * @throws ConflictException
+	 * @throws NotFoundException
 	 */
 	@PostMapping("/user/update")
-	public ResultCount update(@Validated UserUpdateForm userUpdateForm) throws ConflictException {
+	public ResultCount update(@Validated UserUpdateForm userUpdateForm) throws ConflictException, NotFoundException {
 		User user = new User();
 		BeanUtils.copyProperties(userUpdateForm, user);
 		ResultCount resultCount = new ResultCount();
 		resultCount.setResultCount(this.userService.update(user));
+		return resultCount;
+	}
+
+	/**
+	 * ユーザー情報削除
+	 * 
+	 * @param userUpdateForm ユーザー更新フォーム
+	 * @return 更新件数モデル
+	 * @throws ConflictException
+	 */
+	@PostMapping("/user/delete")
+	public ResultCount delete(@Validated UserUpdateForm userUpdateForm) throws ConflictException {
+		User user = new User();
+		BeanUtils.copyProperties(userUpdateForm, user);
+		ResultCount resultCount = new ResultCount();
+		resultCount.setResultCount(this.userService.delete(user));
 		return resultCount;
 	}
 

@@ -53,17 +53,23 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			return this.userMapper.insert(signUp);
 		} catch (DuplicateKeyException e) {
-			throw new ConflictException("userId", MessageCode.CONFLICT, e);
+			throw new ConflictException("userId", MessageCode.CONFLICT_INSERT, e);
 		}
 	}
 
 	@Override
-	public int update(User user) throws ConflictException {
-		try {
-			return this.userMapper.update(user);
-		} catch (DuplicateKeyException e) {
-			throw new ConflictException("userId", MessageCode.CONFLICT, e);
+	public int update(User user) {
+
+		return this.userMapper.update(user);
+	}
+
+	@Override
+	public int delete(User user) throws ConflictException {
+		int resultCount = this.userMapper.delete(user);
+		if (resultCount == 0) {
+			throw new ConflictException("ユーザー", MessageCode.CONFLICT_DELETE);
 		}
+		return resultCount;
 	}
 
 	@Override
