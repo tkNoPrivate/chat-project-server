@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
 import com.example.chat.repository.RoomRepository;
@@ -62,8 +63,12 @@ public class RoomRepositoryImpl implements RoomRepository {
 	}
 
 	@Override
-	public int delete(Room room) {
-		return this.roomMapper.delete(room);
+	public int delete(Room room) throws ConflictException {
+		int resultCount = this.roomMapper.delete(room);
+		if(resultCount == 0) {
+			throw new ConflictException("部屋", MessageCode.CONFLICT_DELETE);
+		}
+		return resultCount;
 	}
 
 }

@@ -7,10 +7,12 @@
    	<result column="userName" property="userName"/>
    	<result column="insDt" property="insDt"/>
    	<result column="updDt" property="updDt"/>
-   	<collection property="rooms" ofType="com.example.chat.model.RoomResponse">
+   	<collection property="rooms" columnPrefix="r_" ofType="com.example.chat.model.RoomResponse">
    		<id column="roomId" property="roomId" />
    		<result column="roomName" property="roomName"/>
    		<result column="registeredUser" property="registeredUser"/>
+   		<result column="insDt" property="insDt"/>
+   		<result column="updDt" property="updDt"/>
    	</collection>
    </resultMap>
    
@@ -20,9 +22,11 @@
       	u.user_name userName,
       	u.ins_dt insDt,
       	u.upd_dt updDt,
-      	r.id roomId,
-      	r.room_name roomName,
-      	r.registered_user registeredUser
+      	r.id r_roomId,
+      	r.room_name r_roomName,
+      	r.registered_user r_registeredUser,
+      	r.ins_dt r_insDt,
+      	r.upd_dt r_updDt
       from 
       	users u
       left outer join 

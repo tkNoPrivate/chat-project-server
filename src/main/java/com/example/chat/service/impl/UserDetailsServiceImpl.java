@@ -1,5 +1,7 @@
 package com.example.chat.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,7 @@ import com.example.chat.util.MessageCode;
  * @author tk
  */
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	/** ログインリポジトリ */

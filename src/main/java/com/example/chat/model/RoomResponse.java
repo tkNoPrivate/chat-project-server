@@ -21,6 +21,12 @@ public class RoomResponse {
 	/** 部屋登録ユーザー */
 	private String registeredUser;
 
+	/** 登録日時 */
+	private String insDt;
+
+	/** 更新日時 */
+	private String updDt;
+
 	/** 部屋参加ユーザーリスト */
 	private List<User> joinUsers;
 

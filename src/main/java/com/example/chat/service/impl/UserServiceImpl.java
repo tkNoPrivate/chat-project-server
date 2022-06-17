@@ -2,6 +2,8 @@ package com.example.chat.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import com.example.chat.util.Util;
  * @author tk
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	/** ユーザー情報取得リポジトリ */

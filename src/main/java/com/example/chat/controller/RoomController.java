@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.chat.controller.form.RoomForm;
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CustomUserDetails;
 import com.example.chat.model.ResultCount;
 import com.example.chat.model.Room;
@@ -95,14 +96,14 @@ public class RoomController {
 	 * @param 更新件数モデル
 	 */
 	@PostMapping("/room/update")
-	public ResultCount update(@Validated RoomForm roomForm) {
+	public ResultCount update(@Validated RoomForm roomForm) throws ConflictException, NotFoundException {
 		Room room = new Room();
 		BeanUtils.copyProperties(roomForm, room);
 		ResultCount resultCount = new ResultCount();
 		resultCount.setResultCount(this.roomService.update(room));
 		return resultCount;
 	}
-	
+
 	/**
 	 * 部屋削除
 	 * 
@@ -110,7 +111,7 @@ public class RoomController {
 	 * @param 更新件数モデル
 	 */
 	@PostMapping("/room/delete")
-	public ResultCount delete(@Validated RoomForm roomForm) {
+	public ResultCount delete(@Validated RoomForm roomForm) throws ConflictException {
 		Room room = new Room();
 		BeanUtils.copyProperties(roomForm, room);
 		ResultCount resultCount = new ResultCount();

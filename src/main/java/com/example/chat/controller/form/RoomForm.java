@@ -23,4 +23,7 @@ public class RoomForm {
 	/** 登録ユーザー */
 	private String registeredUser;
 
+	/** 更新日時 */
+	private String updDt;
+
 }

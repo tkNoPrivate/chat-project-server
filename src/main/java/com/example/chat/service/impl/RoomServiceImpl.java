@@ -7,10 +7,12 @@ import javax.transaction.Transactional;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
 import com.example.chat.repository.RoomRepository;
 import com.example.chat.service.RoomService;
+import com.example.chat.util.MessageCode;
 import com.example.chat.util.Util;
 
 /**
@@ -60,13 +62,17 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public int update(Room room) {
+	public int update(Room room) throws ConflictException,NotFoundException {
+		RoomResponse roomResponse = this.roomRepository.select(room.getRoomId());
+		if (!room.getUpdDt().equals(roomResponse.getUpdDt())) {
+			throw new ConflictException("部屋", MessageCode.CONFLICT_UPDATE);
+		}
 		room.setUpdDt(Util.getStrNowDate());
 		return this.roomRepository.update(room);
 	}
 
 	@Override
-	public int delete(Room room) {
+	public int delete(Room room) throws ConflictException{
 		return this.roomRepository.delete(room);
 	}
 

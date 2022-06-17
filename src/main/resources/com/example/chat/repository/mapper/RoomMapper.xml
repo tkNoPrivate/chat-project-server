@@ -4,6 +4,8 @@
 <resultMap type="com.example.chat.model.RoomResponse" id="room">
    	<id column="roomId" property="roomId"/> 
    	<result column="roomName" property="roomName"/>
+   	<result column="insDt" property="insDt"/>
+   	<result column="updDt" property="updDt"/>
    	<result column="registeredUser" property="registeredUser"/>
    	<collection property="joinUsers" ofType="com.example.chat.model.UserResponse">
    		<id column="userId" property="userId" />
@@ -15,6 +17,8 @@
       		r.id roomId,
       		r.room_name roomName,
       		r.registered_user registeredUser,
+      		r.ins_dt insDt,
+      		r.upd_dt updDt,
       		u.user_id userId,
       		u.user_name userName
       	from

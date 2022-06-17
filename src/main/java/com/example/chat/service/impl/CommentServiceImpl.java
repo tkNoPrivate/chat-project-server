@@ -1,5 +1,7 @@
 package com.example.chat.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.chat.model.Comment;
@@ -14,6 +16,7 @@ import com.example.chat.util.Util;
  *
  */
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService{
 
 	/**コメントリポジトリ*/
