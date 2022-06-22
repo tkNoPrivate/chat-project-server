@@ -2,11 +2,11 @@ package com.example.chat.repository.impl;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 import com.example.chat.exception.ConflictException;
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.User;
 import com.example.chat.model.UserResponse;
@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public UserResponse select(String userId) throws NotFoundException {
+	public UserResponse select(String userId) {
 		UserResponse user = this.userMapper.select(userId);
 		if (user == null) {
 			throw new NotFoundException(MessageCode.NOT_FOUND);
@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public int insert(User signUp) throws ConflictException {
+	public int insert(User signUp) {
 		try {
 			return this.userMapper.insert(signUp);
 		} catch (DuplicateKeyException e) {
@@ -64,10 +64,10 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public int delete(User user) throws ConflictException {
+	public int delete(User user) {
 		int resultCount = this.userMapper.delete(user);
 		if (resultCount == 0) {
-			throw new ConflictException("ユーザー", MessageCode.CONFLICT_DELETE);
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return resultCount;
 	}

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.chat.controller.form.JoinRoomForm;
-import com.example.chat.model.ResultCount;
 import com.example.chat.model.JoinRoom;
+import com.example.chat.model.ResultCount;
 import com.example.chat.service.JoinRoomService;
 
 /**
@@ -18,9 +18,9 @@ import com.example.chat.service.JoinRoomService;
 @RestController
 public class JoinRoomController {
 
-	/**参加部屋サービス*/
+	/** 参加部屋サービス */
 	private final JoinRoomService joinRoomService;
-	
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -29,9 +29,10 @@ public class JoinRoomController {
 	public JoinRoomController(JoinRoomService joinRoomService) {
 		this.joinRoomService = joinRoomService;
 	}
-	
+
 	/**
 	 * 参加部屋登録
+	 * 
 	 * @param joinRoomForm 参加部屋フォーム
 	 * @return 更新件数モデル
 	 */
@@ -43,9 +44,10 @@ public class JoinRoomController {
 		resultCount.setResultCount(this.joinRoomService.signup(joinRoom));
 		return resultCount;
 	}
-	
+
 	/**
 	 * 参加部屋削除（部屋ID）
+	 * 
 	 * @param joinRoomForm 参加部屋フォーム
 	 * @return 更新件数モデル
 	 */
@@ -57,9 +59,10 @@ public class JoinRoomController {
 		resultCount.setResultCount(this.joinRoomService.deleteByRoomId(joinRoom));
 		return resultCount;
 	}
-	
+
 	/**
 	 * 参加部屋削除
+	 * 
 	 * @param joinRoomForm 参加部屋フォーム
 	 * @return 更新件数モデル
 	 */
@@ -71,5 +74,5 @@ public class JoinRoomController {
 		resultCount.setResultCount(this.joinRoomService.delete(joinRoom));
 		return resultCount;
 	}
-	
+
 }

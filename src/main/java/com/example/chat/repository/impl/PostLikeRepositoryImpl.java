@@ -1,10 +1,13 @@
 package com.example.chat.repository.impl;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.PostLike;
 import com.example.chat.repository.PostLikeRepository;
 import com.example.chat.repository.mapper.PostLikeMapper;
+import com.example.chat.util.MessageCode;
 
 /**
  * 投稿いいねリポジトリ実装
@@ -28,14 +31,22 @@ public class PostLikeRepositoryImpl implements PostLikeRepository {
 	}
 
 	@Override
-	public int insert(PostLike postLike){
-		return this.postLikeMapper.insert(postLike);
+	public int insert(PostLike postLike) {
+		try {
+			return this.postLikeMapper.insert(postLike);
+		} catch (DuplicateKeyException e) {
+			throw new ConflictException(MessageCode.CONFLICT_INSERT_LIKE,e);
+		}
 
 	}
 
 	@Override
 	public int delete(PostLike postLike) {
-		return this.postLikeMapper.delete(postLike);
+		int resultCount = this.postLikeMapper.delete(postLike);
+		if (resultCount == 0) {
+			throw new ConflictException(MessageCode.CONFLICT_DELETE_LIKE);
+		}
+		return resultCount;
 	}
 
 }

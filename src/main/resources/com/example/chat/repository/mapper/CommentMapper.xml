@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.chat.repository.mapper.CommentMapper">
+
+   	<select id="select" resultType="com.example.chat.model.CommentResponse">
+   		select 
+   			id commentId,
+   			post_id postId,
+   			user_id commentUserId,
+   			comment comment,
+   			ins_dt insDt,
+   			upd_dt updDt
+   		from
+   			comments
+   		where
+   			id = #{commentId}
+   	</select> 
    
    <insert id="insert" parameterType="com.example.chat.model.Comment">
       insert into 

@@ -3,6 +3,7 @@ package com.example.chat.repository.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.chat.model.Comment;
+import com.example.chat.model.CommentResponse;
 
 /**
  * コメントマッパー
@@ -11,6 +12,14 @@ import com.example.chat.model.Comment;
  */
 @Mapper
 public interface CommentMapper {
+	
+	/**
+	 * コメント取得
+	 * 
+	 * @param commentId コメントID
+	 * @return コメントレスポンスモデル
+	 */
+	CommentResponse select(int commentId);
 
 	/**
 	 * コメント登録

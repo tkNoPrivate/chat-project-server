@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.javassist.NotFoundException;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 
@@ -22,7 +23,7 @@ public interface PostService {
 	 * @return 投稿リスト
 	 * @throws NotFoundException
 	 */
-	List<PostResponse> getPosts(String userId, int roomId) throws NotFoundException;
+	List<PostResponse> getPosts(String userId, int roomId);
 
 	/**
 	 * 投稿検索
@@ -46,6 +47,7 @@ public interface PostService {
 	 * 
 	 * @param post 投稿モデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int update(Post post);
 

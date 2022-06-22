@@ -1,5 +1,6 @@
 package com.example.chat.service;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Comment;
 
 /**
@@ -23,6 +24,7 @@ public interface CommentService {
 	 * 
 	 * @param comment コメントモデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int update(Comment comment);
 

@@ -23,7 +23,7 @@ public interface UserRepository {
 	 * @return ユーザー情報
 	 * @throws NotFoundException
 	 */
-	UserResponse select(String userId) throws NotFoundException;
+	UserResponse select(String userId);
 
 	/**
 	 * 全ユーザー情報リスト取得
@@ -39,7 +39,7 @@ public interface UserRepository {
 	 * @return 更新件数
 	 * @throws ConflictException
 	 */
-	int insert(User user) throws ConflictException;
+	int insert(User user);
 
 	/**
 	 * ユーザー情報更新
@@ -56,7 +56,7 @@ public interface UserRepository {
 	 * @return 更新件数
 	 * @throws ConflictException
 	 */
-	int delete(User user) throws ConflictException;
+	int delete(User user);
 
 	/**
 	 * パスワード取得

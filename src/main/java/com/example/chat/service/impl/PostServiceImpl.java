@@ -2,11 +2,11 @@ package com.example.chat.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.chat.exception.ConflictException;
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 import com.example.chat.repository.JoinRoomRepository;
@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
 	/** 投稿リポジトリ */
 	private final PostRepository postRepository;
-	
+
 	private final JoinRoomRepository joinRoomRepository;
 
 	/**
@@ -35,15 +35,15 @@ public class PostServiceImpl implements PostService {
 	 * 
 	 * @param postRepository 投稿リポジトリ
 	 */
-	public PostServiceImpl(PostRepository postRepository,JoinRoomRepository joinRoomRepository) {
+	public PostServiceImpl(PostRepository postRepository, JoinRoomRepository joinRoomRepository) {
 		this.postRepository = postRepository;
 		this.joinRoomRepository = joinRoomRepository;
 	}
 
 	@Override
-	public List<PostResponse> getPosts(String userId, int roomId) throws NotFoundException {
+	public List<PostResponse> getPosts(String userId, int roomId) {
 		// ログインユーザーが部屋に参加しているかチェックを行う。
-		if(this.joinRoomRepository.selectJoinCount(userId, roomId) == 0) {
+		if (this.joinRoomRepository.selectJoinCount(userId, roomId) == 0) {
 			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return this.postRepository.selectList(roomId);
@@ -67,6 +67,10 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public int update(Post post) {
+		PostResponse postResponse = this.postRepository.select(post.getPostId());
+		if (!post.getUpdDt().equals(postResponse.getUpdDt())) {
+			throw new ConflictException("投稿", MessageCode.CONFLICT_UPDATE);
+		}
 		post.setUpdDt(Util.getStrNowDate());
 		return this.postRepository.update(post);
 	}

@@ -2,8 +2,6 @@ package com.example.chat.service;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
-
 import com.example.chat.exception.ConfirmPasswordMismatchException;
 import com.example.chat.exception.ConflictException;
 import com.example.chat.model.PasswordUpdate;
@@ -22,9 +20,8 @@ public interface UserService {
 	 * 
 	 * @param userId ユーザーID
 	 * @return ユーザー情報
-	 * @throws NotFoundException
 	 */
-	UserResponse getUser(String userId) throws NotFoundException;
+	UserResponse getUser(String userId);
 
 	/**
 	 * ユーザー検索
@@ -38,9 +35,8 @@ public interface UserService {
 	 * 
 	 * @param signUp ユーザー情報モデル
 	 * @return 更新件数
-	 * @throws ConflictException
 	 */
-	int signup(User signUp) throws ConflictException;
+	int signup(User signUp);
 
 	/**
 	 * ユーザー情報更新
@@ -48,18 +44,16 @@ public interface UserService {
 	 * @param user ユーザーモデル
 	 * @return 更新件数
 	 * @throws ConflictException
-	 * @throws NotFoundException
 	 */
-	int update(User user) throws ConflictException, NotFoundException;
+	int update(User user);
 
 	/**
 	 * ユーザー情報削除
 	 * 
 	 * @param user ユーザーモデル
 	 * @return 更新件数
-	 * @throws ConflictException
 	 */
-	int delete(User user) throws ConflictException;
+	int delete(User user);
 
 	/**
 	 * パスワード更新
@@ -68,6 +62,6 @@ public interface UserService {
 	 * @return 更新件数
 	 * @throws ConfirmPasswordMismatchException
 	 */
-	int updatePassword(PasswordUpdate passwordUpdate) throws ConfirmPasswordMismatchException;
+	int updatePassword(PasswordUpdate passwordUpdate);
 
 }

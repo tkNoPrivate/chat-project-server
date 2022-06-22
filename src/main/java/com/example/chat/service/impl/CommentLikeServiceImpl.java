@@ -1,8 +1,7 @@
 package com.example.chat.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.chat.model.CommentLike;
 import com.example.chat.repository.CommentLikeRepository;

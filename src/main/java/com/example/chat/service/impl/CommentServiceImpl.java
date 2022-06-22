@@ -1,12 +1,14 @@
 package com.example.chat.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Comment;
+import com.example.chat.model.CommentResponse;
 import com.example.chat.repository.CommentRepository;
 import com.example.chat.service.CommentService;
+import com.example.chat.util.MessageCode;
 import com.example.chat.util.Util;
 
 /**
@@ -17,11 +19,11 @@ import com.example.chat.util.Util;
  */
 @Service
 @Transactional
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
-	/**コメントリポジトリ*/
+	/** コメントリポジトリ */
 	private final CommentRepository commentRepository;
-	
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -30,7 +32,7 @@ public class CommentServiceImpl implements CommentService{
 	public CommentServiceImpl(CommentRepository commentRepository) {
 		this.commentRepository = commentRepository;
 	}
-	
+
 	@Override
 	public int signup(Comment comment) {
 		String strNowDate = Util.getStrNowDate();
@@ -42,6 +44,10 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public int update(Comment comment) {
+		CommentResponse commentResponse = this.commentRepository.select(comment.getCommentId());
+		if (!comment.getUpdDt().equals(commentResponse.getUpdDt())) {
+			throw new ConflictException("コメント", MessageCode.CONFLICT_UPDATE);
+		}
 		comment.setUpdDt(Util.getStrNowDate());
 		return this.commentRepository.update(comment);
 	}

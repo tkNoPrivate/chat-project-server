@@ -2,7 +2,6 @@ package com.example.chat.controller;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -45,11 +44,9 @@ public class PostController {
 	 * 
 	 * @param roomCd 部屋ID
 	 * @return 投稿リスト
-	 * @throws NotFoundException
 	 */
 	@GetMapping("/posts/{roomId}")
-	public List<PostResponse> getPosts(@AuthenticationPrincipal CustomUserDetails aut, @PathVariable int roomId)
-			throws NotFoundException {
+	public List<PostResponse> getPosts(@AuthenticationPrincipal CustomUserDetails aut, @PathVariable int roomId) {
 		return this.postService.getPosts(aut.getUsername(), roomId);
 
 	}

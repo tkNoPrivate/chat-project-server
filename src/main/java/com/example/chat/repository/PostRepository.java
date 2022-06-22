@@ -11,6 +11,8 @@ import com.example.chat.model.PostResponse;
  * @author tk
  */
 public interface PostRepository {
+	
+	PostResponse select(int postId);
 
 	/**
 	 * 投稿リスト取得

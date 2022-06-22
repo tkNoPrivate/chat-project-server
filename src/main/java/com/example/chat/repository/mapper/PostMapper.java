@@ -14,6 +14,8 @@ import com.example.chat.model.PostResponse;
  */
 @Mapper
 public interface PostMapper {
+	
+	PostResponse select(int postId);
 
 	/**
 	 * 投稿全件取得

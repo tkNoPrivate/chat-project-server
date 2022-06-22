@@ -1,6 +1,7 @@
 package com.example.chat.repository;
 
 import com.example.chat.model.Comment;
+import com.example.chat.model.CommentResponse;
 
 /**
  * コメントリポジトリ
@@ -9,6 +10,14 @@ import com.example.chat.model.Comment;
  *
  */
 public interface CommentRepository {
+	
+	/**
+	 * コメント取得
+	 * 
+	 * @param commentId コメントID
+	 * @return コメントレスポンスモデル
+	 */
+	CommentResponse select(int commentId);
 
 	/**
 	 * コメント登録

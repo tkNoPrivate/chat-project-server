@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -83,8 +82,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ ConflictException.class })
 	public ResponseEntity<Object> ConflictException(ConflictException e, WebRequest request) {
 		Message message = new Message();
-		message.setMessages(Arrays
-				.asList(messageSource.getMessage(e.getMessage(), new String[] { e.getKey() }, request.getLocale())));
+		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(),
+				e.getKey() != null ? new String[] { e.getKey() } : null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.CONFLICT);
 
 	}

@@ -38,6 +38,20 @@
    		</collection>
    	</resultMap>
    	
+   	<select id="select" resultType="com.example.chat.model.PostResponse">
+   		select 
+   			id postId,
+   			user_id userId,
+   			room_id roomId,
+   			contents contents,
+   			ins_dt insDt,
+   			upd_dt updDt
+   		from
+   			posts
+   		where
+   			id = #{postId}
+   	</select>
+   	
    	<select id="selectList" resultMap="post">
       <include refid="select" />
       where 

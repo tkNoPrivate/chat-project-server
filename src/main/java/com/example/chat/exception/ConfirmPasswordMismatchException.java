@@ -1,6 +1,6 @@
 package com.example.chat.exception;
 
-public class ConfirmPasswordMismatchException extends Exception {
+public class ConfirmPasswordMismatchException extends RuntimeException {
 
 	/**
 	 * コンストラクタ

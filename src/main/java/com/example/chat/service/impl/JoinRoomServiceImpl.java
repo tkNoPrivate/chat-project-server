@@ -1,8 +1,7 @@
 package com.example.chat.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.chat.model.JoinRoom;
 import com.example.chat.repository.JoinRoomRepository;
@@ -16,7 +15,7 @@ import com.example.chat.util.Util;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JoinRoomServiceImpl implements JoinRoomService {
 
 	/** 参加部屋リポジトリ */
@@ -24,6 +23,7 @@ public class JoinRoomServiceImpl implements JoinRoomService {
 
 	/**
 	 * コンストラクタ
+	 * 
 	 * @param joinRoomRepository 参加部屋リポジトリ
 	 */
 	public JoinRoomServiceImpl(JoinRoomRepository joinRoomRepository) {
@@ -43,7 +43,7 @@ public class JoinRoomServiceImpl implements JoinRoomService {
 	public int deleteByRoomId(JoinRoom joinRoom) {
 		return this.joinRoomRepository.deleteByRoomId(joinRoom);
 	}
-	
+
 	@Override
 	public int delete(JoinRoom joinRoom) {
 		return this.joinRoomRepository.delete(joinRoom);

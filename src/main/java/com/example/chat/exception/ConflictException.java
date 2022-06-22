@@ -1,6 +1,12 @@
 package com.example.chat.exception;
 
-public class ConflictException extends Exception {
+/**
+ * ConflictException
+ * 
+ * @author TK
+ *
+ */
+public class ConflictException extends RuntimeException {
 
 	/** キー */
 	private String key;
@@ -26,6 +32,25 @@ public class ConflictException extends Exception {
 	public ConflictException(String key, String message) {
 		super(message);
 		this.key = key;
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param message メッセージ
+	 * @param cause   原因
+	 */
+	public ConflictException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param message メッセージ
+	 */
+	public ConflictException(String message) {
+		super(message);
 	}
 
 	/**

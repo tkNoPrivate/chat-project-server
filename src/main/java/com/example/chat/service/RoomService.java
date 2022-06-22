@@ -2,8 +2,6 @@ package com.example.chat.service;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
-
 import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
@@ -21,9 +19,8 @@ public interface RoomService {
 	 * 
 	 * @param roomId 部屋ID
 	 * @return 部屋レスポンスモデル
-	 * @throws NotFoundException
 	 */
-	RoomResponse getRoom(int roomId) throws NotFoundException;
+	RoomResponse getRoom(int roomId);
 
 	/**
 	 * 作成部屋リスト取得
@@ -55,16 +52,14 @@ public interface RoomService {
 	 * @param room 部屋モデル
 	 * @return 更新件数
 	 * @throws ConflictException
-	 * @throws NotFoundException
 	 */
-	int update(Room room) throws ConflictException, NotFoundException;
+	int update(Room room);
 
 	/**
 	 * 部屋削除
 	 * 
 	 * @param room 部屋モデル
 	 * @return 更新件数
-	 * @throws ConflictException
 	 */
-	int delete(Room room) throws ConflictException;
+	int delete(Room room);
 }

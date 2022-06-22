@@ -2,10 +2,9 @@ package com.example.chat.repository.impl;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Repository;
 
-import com.example.chat.exception.ConflictException;
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
 import com.example.chat.repository.RoomRepository;
@@ -34,9 +33,9 @@ public class RoomRepositoryImpl implements RoomRepository {
 	}
 
 	@Override
-	public RoomResponse select(int roomId) throws NotFoundException{
+	public RoomResponse select(int roomId) {
 		RoomResponse room = this.roomMapper.select(roomId);
-		if(room == null) {
+		if (room == null) {
 			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return room;
@@ -63,10 +62,10 @@ public class RoomRepositoryImpl implements RoomRepository {
 	}
 
 	@Override
-	public int delete(Room room) throws ConflictException {
+	public int delete(Room room) {
 		int resultCount = this.roomMapper.delete(room);
-		if(resultCount == 0) {
-			throw new ConflictException("部屋", MessageCode.CONFLICT_DELETE);
+		if (resultCount == 0) {
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return resultCount;
 	}

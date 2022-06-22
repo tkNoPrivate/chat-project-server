@@ -2,7 +2,6 @@ package com.example.chat.controller;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.chat.controller.form.PasswordUpdateForm;
 import com.example.chat.controller.form.UserForm;
 import com.example.chat.controller.form.UserUpdateForm;
-import com.example.chat.exception.ConfirmPasswordMismatchException;
-import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CustomUserDetails;
 import com.example.chat.model.PasswordUpdate;
 import com.example.chat.model.ResultCount;
@@ -48,10 +45,9 @@ public class UserController {
 	 * 
 	 * @param aut 認証情報
 	 * @return ユーザー情報
-	 * @throws NotFoundException
 	 */
 	@GetMapping("/user")
-	public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails aut) throws NotFoundException {
+	public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails aut) {
 		return this.userService.getUser(aut.getUsername());
 
 	}
@@ -72,11 +68,10 @@ public class UserController {
 	 * 
 	 * @param userForm ユーザーフォーム
 	 * @return 更新件数モデル
-	 * @throws ConflictException
 	 */
 	@PostMapping("/user/signup")
 	@CrossOrigin(origins = "http://localhost:8081/")
-	public ResultCount signup(@Validated UserForm userForm) throws ConflictException {
+	public ResultCount signup(@Validated UserForm userForm) {
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		ResultCount resultCount = new ResultCount();
@@ -89,11 +84,9 @@ public class UserController {
 	 * 
 	 * @param userUpdateForm ユーザー更新フォーム
 	 * @return 更新件数モデル
-	 * @throws ConflictException
-	 * @throws NotFoundException
 	 */
 	@PostMapping("/user/update")
-	public ResultCount update(@Validated UserUpdateForm userUpdateForm) throws ConflictException, NotFoundException {
+	public ResultCount update(@Validated UserUpdateForm userUpdateForm) {
 		User user = new User();
 		BeanUtils.copyProperties(userUpdateForm, user);
 		ResultCount resultCount = new ResultCount();
@@ -106,10 +99,9 @@ public class UserController {
 	 * 
 	 * @param userUpdateForm ユーザー更新フォーム
 	 * @return 更新件数モデル
-	 * @throws ConflictException
 	 */
 	@PostMapping("/user/delete")
-	public ResultCount delete(@Validated UserUpdateForm userUpdateForm) throws ConflictException {
+	public ResultCount delete(@Validated UserUpdateForm userUpdateForm) {
 		User user = new User();
 		BeanUtils.copyProperties(userUpdateForm, user);
 		ResultCount resultCount = new ResultCount();
@@ -124,8 +116,7 @@ public class UserController {
 	 * @return 更新件数モデル
 	 */
 	@PostMapping("/user/password/update")
-	public ResultCount updatePassword(@Validated PasswordUpdateForm passwordUpdateForm)
-			throws ConfirmPasswordMismatchException {
+	public ResultCount updatePassword(@Validated PasswordUpdateForm passwordUpdateForm) {
 		PasswordUpdate passwordUpdate = new PasswordUpdate();
 		BeanUtils.copyProperties(passwordUpdateForm, passwordUpdate);
 		ResultCount resultCount = new ResultCount();

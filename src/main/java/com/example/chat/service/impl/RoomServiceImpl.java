@@ -2,10 +2,8 @@ package com.example.chat.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Room;
@@ -38,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public RoomResponse getRoom(int roomId) throws NotFoundException {
+	public RoomResponse getRoom(int roomId) {
 		return this.roomRepository.select(roomId);
 	}
 
@@ -62,7 +60,7 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public int update(Room room) throws ConflictException,NotFoundException {
+	public int update(Room room) {
 		RoomResponse roomResponse = this.roomRepository.select(room.getRoomId());
 		if (!room.getUpdDt().equals(roomResponse.getUpdDt())) {
 			throw new ConflictException("部屋", MessageCode.CONFLICT_UPDATE);
@@ -72,7 +70,11 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public int delete(Room room) throws ConflictException{
+	public int delete(Room room) {
+		RoomResponse roomResponse = this.roomRepository.select(room.getRoomId());
+		if (!room.getUpdDt().equals(roomResponse.getUpdDt())) {
+			throw new ConflictException("部屋", MessageCode.CONFLICT_UPDATE);
+		}
 		return this.roomRepository.delete(room);
 	}
 

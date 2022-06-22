@@ -15,7 +15,7 @@ import com.example.chat.model.RoomResponse;
  *
  */
 public interface RoomRepository {
-	
+
 	/**
 	 * 部屋取得
 	 * 
@@ -23,7 +23,7 @@ public interface RoomRepository {
 	 * @return 部屋レスポンスモデル
 	 * @throws NotFoundException
 	 */
-	RoomResponse select(int roomId) throws NotFoundException;
+	RoomResponse select(int roomId);
 
 	/**
 	 * 部屋リスト取得
@@ -32,7 +32,7 @@ public interface RoomRepository {
 	 * @return 部屋レスポンスモデルリスト
 	 */
 	List<RoomResponse> selectListByRegisteredUser(String registeredUser);
-	
+
 	/**
 	 * 未参加部屋リスト取得
 	 * 
@@ -40,14 +40,15 @@ public interface RoomRepository {
 	 * @return 部屋レスポンスモデルリスト
 	 */
 	List<RoomResponse> selectNonJoinRooms(String userId);
-	
+
 	/**
 	 * 部屋登録
+	 * 
 	 * @param room 部屋モデル
 	 * @return 更新件数
 	 */
 	int insert(Room room);
-	
+
 	/**
 	 * 部屋更新
 	 * 
@@ -55,7 +56,7 @@ public interface RoomRepository {
 	 * @return 更新件数
 	 */
 	int update(Room room);
-	
+
 	/**
 	 * 部屋削除
 	 * 
@@ -63,5 +64,5 @@ public interface RoomRepository {
 	 * @return 更新件数
 	 * @throws ConflictException
 	 */
-	int delete(Room room) throws ConflictException;
+	int delete(Room room);
 }

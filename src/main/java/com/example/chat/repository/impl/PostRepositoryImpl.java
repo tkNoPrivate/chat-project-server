@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 import com.example.chat.repository.PostRepository;
 import com.example.chat.repository.mapper.PostMapper;
+import com.example.chat.util.MessageCode;
 
 /**
  * 投稿リポジトリ実装
@@ -28,6 +30,11 @@ public class PostRepositoryImpl implements PostRepository {
 	 */
 	public PostRepositoryImpl(PostMapper postMapper) {
 		this.postMapper = postMapper;
+	}
+
+	@Override
+	public PostResponse select(int postId) {
+		return this.postMapper.select(postId);
 	}
 
 	@Override
@@ -52,7 +59,11 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public int delete(Post post) {
-		return this.postMapper.delete(post);
+		int resultCount = this.postMapper.delete(post);
+		if (resultCount == 0) {
+			throw new ConflictException("投稿", MessageCode.CONFLICT_DELETE);
+		}
+		return resultCount;
 	}
 
 }

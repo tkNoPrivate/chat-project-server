@@ -1,5 +1,6 @@
 package com.example.chat.repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.JoinRoom;
 
 /**
@@ -17,12 +18,14 @@ public interface JoinRoomRepository {
 	 * @param roomId 部屋ID
 	 * @return 参加部屋件数
 	 */
-	int selectJoinCount(String userId,int roomId);
+	int selectJoinCount(String userId, int roomId);
+
 	/**
 	 * 参加部屋登録
 	 * 
 	 * @param joinRoom 参加部屋
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int insert(JoinRoom joinRoom);
 
@@ -31,6 +34,7 @@ public interface JoinRoomRepository {
 	 * 
 	 * @param joinRoom 参加部屋モデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(JoinRoom joinRoom);
 

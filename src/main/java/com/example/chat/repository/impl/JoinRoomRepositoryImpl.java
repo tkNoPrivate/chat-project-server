@@ -1,10 +1,13 @@
 package com.example.chat.repository.impl;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.JoinRoom;
 import com.example.chat.repository.JoinRoomRepository;
 import com.example.chat.repository.mapper.JoinRoomMapper;
+import com.example.chat.util.MessageCode;
 
 /**
  * 参加部屋リポジトリ実装
@@ -41,10 +44,19 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 		// ユーザーIDリストの要素数が部屋IDリストの要素数より多い場合はユーザーID数分テーブルを更新する。
 		// 同じサイズの場合も同じSQL呼び出しで問題ない。
 		if (userIdListSize >= roomIdListSize) {
-			resultCount = this.joinRoomMapper.insertCountUser(joinRoom);
+			try {
+				resultCount = this.joinRoomMapper.insertCountUser(joinRoom);
+			} catch (DuplicateKeyException e) {
+				throw new ConflictException("部屋参加情報", MessageCode.CONFLICT_UPDATE, e);
+			}
+
 		} else {
 			// 部屋IDリストの要素数が多い場合は部屋ID数分テーブルを更新する。
-			resultCount = this.joinRoomMapper.insertCountRoom(joinRoom);
+			try {
+				resultCount = this.joinRoomMapper.insertCountRoom(joinRoom);
+			} catch (DuplicateKeyException e) {
+				throw new ConflictException("部屋参加情報", MessageCode.CONFLICT_UPDATE, e);
+			}
 		}
 		return resultCount;
 	}
@@ -59,9 +71,15 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 		// 同じサイズの場合も同じSQL呼び出しで問題ない。
 		if (userIdListSize >= roomIdListSize) {
 			resultCount = this.joinRoomMapper.deleteCountUser(joinRoom);
+			if (resultCount != userIdListSize) {
+				throw new ConflictException("部屋脱退情報", MessageCode.CONFLICT_DELETE);
+			}
 		} else {
 			// 部屋IDリストの要素数が多い場合は部屋ID数分テーブルを更新する。
 			resultCount = this.joinRoomMapper.deleteCountRoom(joinRoom);
+			if (resultCount != roomIdListSize) {
+				throw new ConflictException("部屋脱退情報", MessageCode.CONFLICT_DELETE);
+			}
 		}
 		return resultCount;
 	}

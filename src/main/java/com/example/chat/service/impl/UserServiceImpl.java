@@ -2,11 +2,9 @@ package com.example.chat.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.chat.exception.ConfirmPasswordMismatchException;
 import com.example.chat.exception.ConflictException;
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponse getUser(String userId) throws NotFoundException {
+	public UserResponse getUser(String userId) {
 		return this.userRepository.select(userId);
 	}
 
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int signup(User user) throws ConflictException {
+	public int signup(User user) {
 
 		String strNowDate = Util.getStrNowDate();
 
@@ -70,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int update(User user) throws ConflictException, NotFoundException {
+	public int update(User user) {
 		UserResponse userResponse = this.userRepository.select(user.getUserId());
 		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
 			throw new ConflictException("ユーザー", MessageCode.CONFLICT_UPDATE);
@@ -80,12 +78,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int delete(User user) throws ConflictException {
+	public int delete(User user) {
+		UserResponse userResponse = this.userRepository.select(user.getUserId());
+		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
+			throw new ConflictException("ユーザー", MessageCode.CONFLICT_UPDATE);
+		}
 		return this.userRepository.delete(user);
 	}
 
 	@Override
-	public int updatePassword(PasswordUpdate passwordUpdate) throws ConfirmPasswordMismatchException {
+	public int updatePassword(PasswordUpdate passwordUpdate) {
 		String password = this.userRepository.selectPassword(passwordUpdate.getUserId());
 		// 現在のパスワードが正しいかチェックする
 		if (!passwordEncoder.matches(passwordUpdate.getPassword(), password)) {

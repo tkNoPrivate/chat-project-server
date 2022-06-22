@@ -1,7 +1,5 @@
 package com.example.chat.controller;
 
-import javax.transaction.SystemException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,18 +35,17 @@ public class PostLikeController {
 	 * 
 	 * @param postLikeForm 投稿いいねフォーム
 	 * @return 更新件数モデル
-	 * @throws SystemException
 	 */
 	@PostMapping("/postlike/signup")
-	public ResultCount signup(PostLikeForm postLikeForm) throws SystemException{
+	public ResultCount signup(PostLikeForm postLikeForm) {
 		PostLike postLike = new PostLike();
 		BeanUtils.copyProperties(postLikeForm, postLike);
 		ResultCount resultCount = new ResultCount();
 		resultCount.setResultCount(this.postLikeService.signup(postLike));
 		return resultCount;
-		
+
 	}
-	
+
 	/**
 	 * 投稿いいね削除
 	 * 

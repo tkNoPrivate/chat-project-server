@@ -2,7 +2,6 @@ package com.example.chat.controller;
 
 import java.util.List;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.chat.controller.form.RoomForm;
-import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CustomUserDetails;
 import com.example.chat.model.ResultCount;
 import com.example.chat.model.Room;
@@ -45,10 +43,9 @@ public class RoomController {
 	 * 
 	 * @param roomId 部屋ID
 	 * @return 部屋レスポンスモデル
-	 * @throws NotFoundException
 	 */
 	@GetMapping("/room/{roomId}")
-	public RoomResponse getRoom(@PathVariable int roomId) throws NotFoundException {
+	public RoomResponse getRoom(@PathVariable int roomId) {
 		return this.roomService.getRoom(roomId);
 	}
 
@@ -96,7 +93,7 @@ public class RoomController {
 	 * @param 更新件数モデル
 	 */
 	@PostMapping("/room/update")
-	public ResultCount update(@Validated RoomForm roomForm) throws ConflictException, NotFoundException {
+	public ResultCount update(@Validated RoomForm roomForm) {
 		Room room = new Room();
 		BeanUtils.copyProperties(roomForm, room);
 		ResultCount resultCount = new ResultCount();
@@ -111,7 +108,7 @@ public class RoomController {
 	 * @param 更新件数モデル
 	 */
 	@PostMapping("/room/delete")
-	public ResultCount delete(@Validated RoomForm roomForm) throws ConflictException {
+	public ResultCount delete(@Validated RoomForm roomForm) {
 		Room room = new Room();
 		BeanUtils.copyProperties(roomForm, room);
 		ResultCount resultCount = new ResultCount();
