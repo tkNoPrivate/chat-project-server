@@ -28,7 +28,11 @@ public class PostServiceImpl implements PostService {
 	/** 投稿リポジトリ */
 	private final PostRepository postRepository;
 
+	/** 参加部屋リポジトリ */
 	private final JoinRoomRepository joinRoomRepository;
+
+	/** 埋め込み文字_投稿 */
+	private static final String ARG_POST = "投稿";
 
 	/**
 	 * コンストラクタ
@@ -67,17 +71,22 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public int update(Post post) {
-		PostResponse postResponse = this.postRepository.select(post.getPostId());
-		if (!post.getUpdDt().equals(postResponse.getUpdDt())) {
-			throw new ConflictException("投稿", MessageCode.CONFLICT_UPDATE);
-		}
+		this.checkOptimisticLock(post);
 		post.setUpdDt(Util.getStrNowDate());
 		return this.postRepository.update(post);
 	}
 
 	@Override
 	public int delete(Post post) {
+		this.checkOptimisticLock(post);
 		return this.postRepository.delete(post);
+	}
+
+	private void checkOptimisticLock(Post post) {
+		PostResponse postResponse = this.postRepository.select(post.getPostId());
+		if (!post.getUpdDt().equals(postResponse.getUpdDt())) {
+			throw new ConflictException(ARG_POST, MessageCode.CONFLICT_UPDATE);
+		}
 	}
 
 }

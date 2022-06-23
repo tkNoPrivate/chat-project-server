@@ -83,7 +83,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> ConflictException(ConflictException e, WebRequest request) {
 		Message message = new Message();
 		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(),
-				e.getKey() != null ? new String[] { e.getKey() } : null, request.getLocale())));
+				e.getArg() != null ? new String[] { e.getArg() } : null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.CONFLICT);
 
 	}

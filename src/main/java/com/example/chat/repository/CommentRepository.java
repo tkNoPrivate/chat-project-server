@@ -1,5 +1,6 @@
 package com.example.chat.repository;
 
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Comment;
 import com.example.chat.model.CommentResponse;
 
@@ -16,6 +17,7 @@ public interface CommentRepository {
 	 * 
 	 * @param commentId コメントID
 	 * @return コメントレスポンスモデル
+	 * @throws NotFoundException
 	 */
 	CommentResponse select(int commentId);
 
@@ -40,6 +42,7 @@ public interface CommentRepository {
 	 * 
 	 * @param comment コメントモデル
 	 * @return 更新件数
+	 * @throws NotFoundException
 	 */
 	int delete(Comment comment);
 }

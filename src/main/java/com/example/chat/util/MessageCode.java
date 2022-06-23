@@ -8,13 +8,13 @@ public class MessageCode {
 	/** ログインしていません。 */
 	public static final String UNAUTHENTICATION = "e.chat.unauthenticated";
 
-	/** その{0}は既に使用されています。 */
+	/** {0}は使用されています。 */
 	public static final String CONFLICT_INSERT = "e.chat.conflict.insert";
 
-	/** その{0}は既に更新されています。 */
+	/** {0}は更新されています。再度操作してください。 */
 	public static final String CONFLICT_UPDATE = "e.chat.conflict.update";
 
-	/** その{0}は既に削除されています。 */
+	/** {0}は削除されています。再度操作してください。 */
 	public static final String CONFLICT_DELETE = "e.chat.conflict.delete";
 
 	/** 既にいいねされています。 */

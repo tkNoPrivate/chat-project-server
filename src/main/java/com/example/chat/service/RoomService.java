@@ -60,6 +60,7 @@ public interface RoomService {
 	 * 
 	 * @param room 部屋モデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(Room room);
 }

@@ -54,7 +54,7 @@ public interface UserRepository {
 	 * 
 	 * @param user
 	 * @return 更新件数
-	 * @throws ConflictException
+	 * @throws NotFoundException
 	 */
 	int delete(User user);
 

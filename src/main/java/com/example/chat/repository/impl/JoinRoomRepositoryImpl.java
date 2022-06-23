@@ -21,6 +21,12 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 	/** 参加部屋マッパー */
 	private final JoinRoomMapper joinRoomMapper;
 
+	/** 埋め込み文字_部屋参加情報 */
+	private static final String ARG_ROOM_JOIN = "部屋参加情報";
+
+	/** 埋め込み文字_部屋脱退情報 */
+	private static final String ARG_ROOM_DROPOUT = "部屋脱退情報";
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -47,7 +53,7 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 			try {
 				resultCount = this.joinRoomMapper.insertCountUser(joinRoom);
 			} catch (DuplicateKeyException e) {
-				throw new ConflictException("部屋参加情報", MessageCode.CONFLICT_UPDATE, e);
+				throw new ConflictException(ARG_ROOM_JOIN, MessageCode.CONFLICT_UPDATE, e);
 			}
 
 		} else {
@@ -55,7 +61,7 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 			try {
 				resultCount = this.joinRoomMapper.insertCountRoom(joinRoom);
 			} catch (DuplicateKeyException e) {
-				throw new ConflictException("部屋参加情報", MessageCode.CONFLICT_UPDATE, e);
+				throw new ConflictException(ARG_ROOM_JOIN, MessageCode.CONFLICT_UPDATE, e);
 			}
 		}
 		return resultCount;
@@ -72,13 +78,13 @@ public class JoinRoomRepositoryImpl implements JoinRoomRepository {
 		if (userIdListSize >= roomIdListSize) {
 			resultCount = this.joinRoomMapper.deleteCountUser(joinRoom);
 			if (resultCount != userIdListSize) {
-				throw new ConflictException("部屋脱退情報", MessageCode.CONFLICT_DELETE);
+				throw new ConflictException(ARG_ROOM_DROPOUT, MessageCode.CONFLICT_UPDATE);
 			}
 		} else {
 			// 部屋IDリストの要素数が多い場合は部屋ID数分テーブルを更新する。
 			resultCount = this.joinRoomMapper.deleteCountRoom(joinRoom);
 			if (resultCount != roomIdListSize) {
-				throw new ConflictException("部屋脱退情報", MessageCode.CONFLICT_DELETE);
+				throw new ConflictException(ARG_ROOM_DROPOUT, MessageCode.CONFLICT_UPDATE);
 			}
 		}
 		return resultCount;

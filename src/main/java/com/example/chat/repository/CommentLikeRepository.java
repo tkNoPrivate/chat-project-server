@@ -1,5 +1,6 @@
 package com.example.chat.repository;
 
+import com.example.chat.exception.ConflictException;
 import com.example.chat.model.CommentLike;
 
 /**
@@ -15,6 +16,7 @@ public interface CommentLikeRepository {
 	 * 
 	 * @param commentLike コメントいいねモデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int insert(CommentLike commentLike);
 	
@@ -23,6 +25,7 @@ public interface CommentLikeRepository {
 	 * 
 	 * @param commentLike コメントいいねモデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(CommentLike commentLike);
 }

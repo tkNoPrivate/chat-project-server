@@ -8,30 +8,30 @@ package com.example.chat.exception;
  */
 public class ConflictException extends RuntimeException {
 
-	/** キー */
-	private String key;
+	/** 埋め込み文字 */
+	private String arg;
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param key     キー
+	 * @param arg     埋め込み文字
 	 * @param message メッセージ
 	 * @param cause   原因
 	 */
-	public ConflictException(String key, String message, Throwable cause) {
+	public ConflictException(String arg, String message, Throwable cause) {
 		super(message, cause);
-		this.key = key;
+		this.arg = arg;
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param key     キー
+	 * @param arg     埋め込み文字
 	 * @param message メッセージ
 	 */
-	public ConflictException(String key, String message) {
+	public ConflictException(String arg, String message) {
 		super(message);
-		this.key = key;
+		this.arg = arg;
 	}
 
 	/**
@@ -54,12 +54,12 @@ public class ConflictException extends RuntimeException {
 	}
 
 	/**
-	 * キー取得
+	 * 埋め込み文字取得
 	 * 
 	 * @return
 	 */
-	public String getKey() {
-		return this.key;
+	public String getArg() {
+		return this.arg;
 	}
 
 }

@@ -52,6 +52,7 @@ public interface UserService {
 	 * 
 	 * @param user ユーザーモデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(User user);
 

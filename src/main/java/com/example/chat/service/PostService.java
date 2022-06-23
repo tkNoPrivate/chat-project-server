@@ -56,6 +56,7 @@ public interface PostService {
 	 * 
 	 * @param post 投稿モデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(Post post);
 

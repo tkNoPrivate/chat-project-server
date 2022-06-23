@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.javassist.NotFoundException;
 
-import com.example.chat.exception.ConflictException;
 import com.example.chat.model.Room;
 import com.example.chat.model.RoomResponse;
 
@@ -62,7 +61,15 @@ public interface RoomRepository {
 	 * 
 	 * @param room 部屋モデル
 	 * @return 更新件数
-	 * @throws ConflictException
+	 * @throws NotFoundException
 	 */
 	int delete(Room room);
+
+	/**
+	 * 部屋存在チェック
+	 * 
+	 * @param roomId 部屋ID
+	 * @return チェック結果
+	 */
+	boolean exitById(int roomId);
 }

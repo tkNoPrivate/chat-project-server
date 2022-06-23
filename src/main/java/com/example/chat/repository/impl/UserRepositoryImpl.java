@@ -25,6 +25,9 @@ public class UserRepositoryImpl implements UserRepository {
 	/** ユーザー情報取得マッパー */
 	private final UserMapper userMapper;
 
+	/** 埋め込み文字_ユーザーID */
+	private static final String ARG_USER_ID = "ユーザーID";
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -53,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			return this.userMapper.insert(signUp);
 		} catch (DuplicateKeyException e) {
-			throw new ConflictException("userId", MessageCode.CONFLICT_INSERT, e);
+			throw new ConflictException(ARG_USER_ID, MessageCode.CONFLICT_INSERT, e);
 		}
 	}
 

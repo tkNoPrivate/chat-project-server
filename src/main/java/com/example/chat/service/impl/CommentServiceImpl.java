@@ -24,6 +24,9 @@ public class CommentServiceImpl implements CommentService {
 	/** コメントリポジトリ */
 	private final CommentRepository commentRepository;
 
+	/** 埋め込み文字_コメント */
+	private static final String ARG_COMMENT = "コメント";
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -44,17 +47,22 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public int update(Comment comment) {
-		CommentResponse commentResponse = this.commentRepository.select(comment.getCommentId());
-		if (!comment.getUpdDt().equals(commentResponse.getUpdDt())) {
-			throw new ConflictException("コメント", MessageCode.CONFLICT_UPDATE);
-		}
+		this.checkOptimisticLock(comment);
 		comment.setUpdDt(Util.getStrNowDate());
 		return this.commentRepository.update(comment);
 	}
 
 	@Override
 	public int delete(Comment comment) {
+		this.checkOptimisticLock(comment);
 		return this.commentRepository.delete(comment);
+	}
+
+	private void checkOptimisticLock(Comment comment) {
+		CommentResponse commentResponse = this.commentRepository.select(comment.getCommentId());
+		if (!comment.getUpdDt().equals(commentResponse.getUpdDt())) {
+			throw new ConflictException(ARG_COMMENT, MessageCode.CONFLICT_UPDATE);
+		}
 	}
 
 }

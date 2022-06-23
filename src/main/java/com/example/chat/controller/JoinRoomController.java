@@ -52,7 +52,7 @@ public class JoinRoomController {
 	 * @return 更新件数モデル
 	 */
 	@PostMapping("/joinroom/delete/roomid")
-	public ResultCount update(JoinRoomForm joinRoomForm) {
+	public ResultCount deleteByRoomId(JoinRoomForm joinRoomForm) {
 		JoinRoom joinRoom = new JoinRoom();
 		BeanUtils.copyProperties(joinRoomForm, joinRoom);
 		ResultCount resultCount = new ResultCount();
@@ -67,7 +67,7 @@ public class JoinRoomController {
 	 * @return 更新件数モデル
 	 */
 	@PostMapping("/joinroom/delete")
-	public ResultCount delte(JoinRoomForm joinRoomForm) {
+	public ResultCount delete(JoinRoomForm joinRoomForm) {
 		JoinRoom joinRoom = new JoinRoom();
 		BeanUtils.copyProperties(joinRoomForm, joinRoom);
 		ResultCount resultCount = new ResultCount();

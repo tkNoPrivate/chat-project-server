@@ -70,4 +70,9 @@ public class RoomRepositoryImpl implements RoomRepository {
 		return resultCount;
 	}
 
+	@Override
+	public boolean exitById(int roomId) {
+		return this.roomMapper.selectRoomCount(roomId) != 0;
+	}
+
 }

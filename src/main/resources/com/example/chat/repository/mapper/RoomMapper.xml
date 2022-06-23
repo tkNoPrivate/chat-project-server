@@ -75,6 +75,15 @@
       		id
    </select>
    
+   <select id="selectRoomCount" resultType="_int">
+      	select
+      		count(*)
+      	from
+      		rooms
+      	where
+      		id = #{roomId}
+   </select>
+   
    
    <insert id="insert" parameterType="com.example.chat.model.Room">
    		insert into

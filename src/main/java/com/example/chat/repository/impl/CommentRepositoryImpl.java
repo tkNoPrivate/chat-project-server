@@ -2,7 +2,7 @@ package com.example.chat.repository.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.chat.exception.ConflictException;
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Comment;
 import com.example.chat.model.CommentResponse;
 import com.example.chat.repository.CommentRepository;
@@ -32,7 +32,11 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public CommentResponse select(int commentId) {
-		return this.commentMapper.select(commentId);
+		CommentResponse commentResponse = this.commentMapper.select(commentId);
+		if (commentResponse == null) {
+			throw new NotFoundException(MessageCode.NOT_FOUND);
+		}
+		return commentResponse;
 	}
 
 	@Override
@@ -49,7 +53,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	public int delete(Comment comment) {
 		int resultCount = this.commentMapper.delete(comment);
 		if (resultCount == 0) {
-			throw new ConflictException("コメント", MessageCode.CONFLICT_DELETE);
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return resultCount;
 	}

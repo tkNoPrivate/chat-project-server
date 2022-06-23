@@ -33,6 +33,7 @@ public interface CommentService {
 	 * 
 	 * @param comment コメントモデル
 	 * @return 更新件数
+	 * @throws ConflictException
 	 */
 	int delete(Comment comment);
 }

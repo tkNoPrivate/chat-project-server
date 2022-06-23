@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.chat.exception.ConflictException;
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 import com.example.chat.repository.PostRepository;
@@ -34,7 +34,11 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public PostResponse select(int postId) {
-		return this.postMapper.select(postId);
+		PostResponse postResponse = this.postMapper.select(postId);
+		if (postResponse == null) {
+			throw new NotFoundException(MessageCode.NOT_FOUND);
+		}
+		return postResponse;
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class PostRepositoryImpl implements PostRepository {
 	public int delete(Post post) {
 		int resultCount = this.postMapper.delete(post);
 		if (resultCount == 0) {
-			throw new ConflictException("投稿", MessageCode.CONFLICT_DELETE);
+			throw new NotFoundException(MessageCode.NOT_FOUND);
 		}
 		return resultCount;
 	}

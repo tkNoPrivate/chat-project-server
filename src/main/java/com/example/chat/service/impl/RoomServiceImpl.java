@@ -26,6 +26,9 @@ public class RoomServiceImpl implements RoomService {
 	/** 部屋リポジトリ */
 	private final RoomRepository roomRepository;
 
+	/** 埋め込み文字_部屋 */
+	private final static String ARG_ROOM = "部屋";
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -61,21 +64,22 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public int update(Room room) {
-		RoomResponse roomResponse = this.roomRepository.select(room.getRoomId());
-		if (!room.getUpdDt().equals(roomResponse.getUpdDt())) {
-			throw new ConflictException("部屋", MessageCode.CONFLICT_UPDATE);
-		}
+		this.checkOptimisticLock(room);
 		room.setUpdDt(Util.getStrNowDate());
 		return this.roomRepository.update(room);
 	}
 
 	@Override
 	public int delete(Room room) {
+		this.checkOptimisticLock(room);
+		return this.roomRepository.delete(room);
+	}
+
+	private void checkOptimisticLock(Room room) {
 		RoomResponse roomResponse = this.roomRepository.select(room.getRoomId());
 		if (!room.getUpdDt().equals(roomResponse.getUpdDt())) {
-			throw new ConflictException("部屋", MessageCode.CONFLICT_UPDATE);
+			throw new ConflictException(ARG_ROOM, MessageCode.CONFLICT_UPDATE);
 		}
-		return this.roomRepository.delete(room);
 	}
 
 }

@@ -46,7 +46,7 @@ public interface RoomMapper {
 	 * @return 更新件数
 	 */
 	int insert(Room room);
-	
+
 	/**
 	 * 部屋更新
 	 * 
@@ -54,7 +54,7 @@ public interface RoomMapper {
 	 * @return 更新件数
 	 */
 	int update(Room room);
-	
+
 	/**
 	 * 部屋削除
 	 * 
@@ -62,5 +62,13 @@ public interface RoomMapper {
 	 * @return 更新件数
 	 */
 	int delete(Room room);
+
+	/**
+	 * 部屋数取得
+	 * 
+	 * @param roomId 部屋ID
+	 * @return 部屋数
+	 */
+	int selectRoomCount(int roomId);
 
 }

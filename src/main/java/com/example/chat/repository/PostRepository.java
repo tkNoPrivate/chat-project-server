@@ -2,6 +2,7 @@ package com.example.chat.repository;
 
 import java.util.List;
 
+import com.example.chat.exception.NotFoundException;
 import com.example.chat.model.Post;
 import com.example.chat.model.PostResponse;
 
@@ -12,6 +13,13 @@ import com.example.chat.model.PostResponse;
  */
 public interface PostRepository {
 	
+	/**
+	 * 投稿取得
+	 * 
+	 * @param postId 投稿ID
+	 * @return 投稿レスポンスモデル
+	 * @throws NotFoundException
+	 */
 	PostResponse select(int postId);
 
 	/**
@@ -52,6 +60,7 @@ public interface PostRepository {
 	 * 
 	 * @param post 投稿モデル
 	 * @return 更新件数
+	 * @throws NotFoundException
 	 */
 	int delete(Post post);
 

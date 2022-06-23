@@ -32,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	/** パスワードエンコーダー */
 	private final BCryptPasswordEncoder passwordEncoder;
 
+	/** 埋め込み文字_ユーザー */
+	private static final String ARG_USER = "ユーザー";
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -69,20 +72,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int update(User user) {
-		UserResponse userResponse = this.userRepository.select(user.getUserId());
-		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
-			throw new ConflictException("ユーザー", MessageCode.CONFLICT_UPDATE);
-		}
+		this.checkOptimisticLock(user);
 		user.setUpdDt(Util.getStrNowDate());
 		return this.userRepository.update(user);
 	}
 
 	@Override
 	public int delete(User user) {
-		UserResponse userResponse = this.userRepository.select(user.getUserId());
-		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
-			throw new ConflictException("ユーザー", MessageCode.CONFLICT_UPDATE);
-		}
+		this.checkOptimisticLock(user);
 		return this.userRepository.delete(user);
 	}
 
@@ -96,6 +93,13 @@ public class UserServiceImpl implements UserService {
 		passwordUpdate.setNewPassword(passwordEncoder.encode(passwordUpdate.getNewPassword()));
 		passwordUpdate.setUpdDt(Util.getStrNowDate());
 		return this.userRepository.updatePassword(passwordUpdate);
+	}
+
+	private void checkOptimisticLock(User user) {
+		UserResponse userResponse = this.userRepository.select(user.getUserId());
+		if (!user.getUpdDt().equals(userResponse.getUpdDt())) {
+			throw new ConflictException(ARG_USER, MessageCode.CONFLICT_UPDATE);
+		}
 	}
 
 }
