@@ -9,13 +9,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.example.chat.model.Message;
+import com.example.chat.model.ErrorResponse;
 import com.example.chat.util.MessageCode;
 
 /**
@@ -43,17 +44,20 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
 			WebRequest request) {
 
-		List<String> messageList = new ArrayList<>();
+		List<String> messages = new ArrayList<String>();
+		List<String> fields = new ArrayList<String>();
 
 		List<ObjectError> objectErrorList = ex.getAllErrors();
 		objectErrorList.forEach(s -> {
+			fields.add(((FieldError) s).getField());
 			String errorMessage = messageSource.getMessage(s, request.getLocale());
-			messageList.add(errorMessage);
+			messages.add(errorMessage);
 		});
 
-		Message message = new Message();
-		message.setMessages(messageList);
-		return new ResponseEntity<Object>(message, headers, status);
+		ErrorResponse errorResponse = new ErrorResponse();
+		errorResponse.setFields(fields);
+		errorResponse.setMessages(messages);
+		return new ResponseEntity<Object>(errorResponse, headers, status);
 
 	}
 
@@ -66,7 +70,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ NotFoundException.class })
 	public ResponseEntity<Object> NotFoundException(NotFoundException e, WebRequest request) {
-		Message message = new Message();
+		ErrorResponse message = new ErrorResponse();
 		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(), null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
 
@@ -81,7 +85,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ ConflictException.class })
 	public ResponseEntity<Object> ConflictException(ConflictException e, WebRequest request) {
-		Message message = new Message();
+		ErrorResponse message = new ErrorResponse();
 		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(),
 				e.getArg() != null ? new String[] { e.getArg() } : null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.CONFLICT);
@@ -98,7 +102,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ ConfirmPasswordMismatchException.class })
 	public ResponseEntity<Object> ConfirmPasswordMismatchException(ConfirmPasswordMismatchException e,
 			WebRequest request) {
-		Message message = new Message();
+		ErrorResponse message = new ErrorResponse();
 		message.setMessages(Arrays.asList(messageSource.getMessage(e.getMessage(), null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
 
@@ -113,7 +117,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> Exception(Exception e, WebRequest request) {
-		Message message = new Message();
+		ErrorResponse message = new ErrorResponse();
 		message.setMessages(
 				Arrays.asList(messageSource.getMessage(MessageCode.SYSTEM_ERROR, null, request.getLocale())));
 		return new ResponseEntity<Object>(message, HttpStatus.INTERNAL_SERVER_ERROR);

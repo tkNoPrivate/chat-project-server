@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.chat.model.Message;
+import com.example.chat.model.ErrorResponse;
 import com.example.chat.util.MessageCode;
 
 /**
@@ -137,7 +137,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				throw exception;
 			}
 
-			Message result = new Message();
+			ErrorResponse result = new ErrorResponse();
 			result.setMessages(Arrays
 					.asList(messageSource.getMessage(MessageCode.AUTHENTICATION_FAILURE, null, request.getLocale())));
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -155,7 +155,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private AuthenticationEntryPoint authenticationEntryPoint() {
 
 		return (request, response, exception) -> {
-			Message result = new Message();
+			ErrorResponse result = new ErrorResponse();
 			result.setMessages(
 					Arrays.asList(messageSource.getMessage(MessageCode.UNAUTHENTICATION, null, request.getLocale())));
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());

@@ -2,6 +2,8 @@ package com.example.chat.controller.form;
 
 import javax.validation.constraints.NotBlank;
 
+import com.example.chat.controller.annotation.CustomSize;
+
 import lombok.Data;
 
 /**
@@ -18,6 +20,7 @@ public class RoomForm {
 
 	/** 部屋名 */
 	@NotBlank
+	@CustomSize(min = 1, max = 30)
 	private String roomName;
 
 	/** 登録ユーザー */

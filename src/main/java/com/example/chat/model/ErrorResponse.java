@@ -5,12 +5,15 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * メッセージモデル
+ * エラーレスポンスモデル
  * 
  * @author tk
  */
 @Data
-public class Message {
+public class ErrorResponse {
+
+	/** フィールドリスト */
+	private List<String> Fields;
 
 	/** メッセージリスト */
 	private List<String> messages;
