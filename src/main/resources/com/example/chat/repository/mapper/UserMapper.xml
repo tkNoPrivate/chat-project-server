@@ -13,6 +13,10 @@
    		<result column="registeredUser" property="registeredUser"/>
    		<result column="insDt" property="insDt"/>
    		<result column="updDt" property="updDt"/>
+   		<collection property="joinUsers" columnPrefix="ju_" ofType="com.example.chat.model.UserResponse">
+	   		<id column="userId" property="userId" />
+	   		<result column="userName" property="userName"/>
+   		</collection>
    	</collection>
    </resultMap>
    
@@ -26,7 +30,9 @@
       	r.room_name r_roomName,
       	r.registered_user r_registeredUser,
       	r.ins_dt r_insDt,
-      	r.upd_dt r_updDt
+      	r.upd_dt r_updDt,
+      	ju.user_id r_ju_userId,
+      	ju.user_name r_ju_userName
       from 
       	users u
       left outer join 
@@ -39,6 +45,16 @@
       	r.id = j.room_id
       or
       	r.registered_user = u.user_id
+      left outer join
+      	joinroom rj
+      on
+      	r.id = rj.room_id
+      left outer join
+      	users ju
+      on
+      	rj.user_id = ju.user_id
+      or
+      	r.registered_user = ju.user_id
       where 
       	u.user_id = #{userId}
       order by
