@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -104,7 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 
 		// CSRF設定
-		http.csrf().disable();
+		http.csrf().ignoringAntMatchers("/user/signup", "/login")
+				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
 		// CORS対策
 		http.cors().configurationSource(this.corsFilter());
